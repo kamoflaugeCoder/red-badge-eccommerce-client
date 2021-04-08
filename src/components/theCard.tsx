@@ -1,3 +1,4 @@
+import Item from 'antd/lib/list/Item';
 import React, { Component } from 'react';
 import {
   Card, CardImg, CardText, CardBody,
@@ -21,15 +22,15 @@ class theCard extends React.Component {
 render( ){
     return(
     <div>
-      <Card>
-        <CardImg top width="100%" src="https://fakestoreapi.com/products" />
+      {/* <Card>
+        <CardImg top width="100%"  src={item.image} alt={item.title}  />
         <CardBody>
-          <CardTitle tag="h5">Card title</CardTitle>
-          <CardSubtitle tag="h6" className="mb-2 text-muted">Card subtitle</CardSubtitle>
-          <CardText>Some quick example text to build on the card title and make up the bulk of the card's content.</CardText>
-          <Button>Button</Button>
+          <CardTitle tag="h5">{item.title}</CardTitle>
+          <CardSubtitle tag="h6" className="mb-2 text-muted">${item.price}</CardSubtitle>
+          <CardText>{item.description}</CardText>
+          <Button onClick={() => handleAddToCart(item)}>Add to cart</Button>
         </CardBody>
-      </Card>
+      </Card> */}
     </div>
 
     )

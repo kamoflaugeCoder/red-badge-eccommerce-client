@@ -108,9 +108,11 @@ if (error) return <div> Something went wrong...</div>;
         
     return (
       <Wrapper>
+        <CardDeck>
    {data?.map(item => (
      <Item item={item} handleAddToCart={handleAddToCart} />
-   ))}
+     ))}
+     </CardDeck>
    </Wrapper>
      );
    };

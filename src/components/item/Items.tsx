@@ -1,7 +1,10 @@
-import { Button } from 'antd';
+// import { Button } from 'antd';
 import { SwitchClickEventHandler } from 'antd/lib/switch';
-import { CardDeck } from 'reactstrap';
-
+// import { CardDeck } from 'reactstrap';
+import {
+  Card, CardImg, CardText, CardBody,
+  CardTitle, CardSubtitle, Button, CardDeck, CardGroup
+} from 'reactstrap';
 
 // Types
 import  { CartItemType  } from '../../App';
@@ -13,24 +16,27 @@ type Props = {
     handleAddToCart: (clickedItem: CartItemType) => void;
 }
 
-const Item: React.FC<Props> = ( {item, handleAddToCart,  }) => (
-    <Wrapper>
-        <img src={item.image} alt={item.title}  />
-    <div>  
-        <h3>{item.title}</h3>
-        <p>{item.description}</p>
-        <h3>${item.price}</h3>
-    </div>
-    <Button onClick={() => handleAddToCart(item)}>Add to cart</Button>
-    </Wrapper>
-);
+const Item: React.FC<Props> = ( {item, handleAddToCart,  }) => {
+ 
+return(
+    <Card className="m-2" style={{ minWidth:"200px"}}>
+      <CardImg top width ="100%" src={item.image} alt={item.title}  />
+      <CardBody>
+        <CardTitle tag="h5">{item.title}</CardTitle>
+        <CardSubtitle tag="h6" className="mb-2 text-muted">${item.price}</CardSubtitle>
+        <CardText>{item.description}</CardText>
+        <Button onClick={() => handleAddToCart(item)}>Add to cart</Button>
+      </CardBody>
+    </Card>
+)
+};
 
  
 
 
 
 
-       {/* <Card>
+       /* <Card>
          <CardImg top width="100%" src="/assets/256x186.svg" alt="Card image cap" />
          <CardBody>
            <CardTitle tag="h5">Card title</CardTitle>
@@ -48,6 +54,6 @@ const Item: React.FC<Props> = ( {item, handleAddToCart,  }) => (
           <Button>Button</Button>
         </CardBody>
       </Card>
-    </CardDeck>  */}
+    </CardDeck>  */
 
     export default Item;
