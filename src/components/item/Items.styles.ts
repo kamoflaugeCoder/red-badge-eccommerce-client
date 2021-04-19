@@ -2,21 +2,21 @@
 import styled from 'styled-components';
 
 export const Wrapper = styled.div`
-    display: Flex;
+    display: flex;
     justify-content: space-between;
-    flex-direction: row;
-    width: 100%;
+    flex-direction: column;
+    width: 50%;
     border:1px solid lightblue;
     border-radius: 20px;
     height: 100%;
 
     button{
-        border-radius: 0 0 10px 10px;
+        border-radius: 0 0 20px 20px;
     }
 
     img{
-        max-height: 100px;
-        object-fit:scale-down ;
+        max-height: 250px;
+        object-fit: cover ;
         border-radius: 20px 20px 0 0;
     }
 

@@ -1,4 +1,10 @@
+@import '~antd/dist/antd.css';
+
+.App{
+    text-align:right;
+}
+
 Col{
     background-color: crimson;
-    height: 20px;
+    height: 50px;
 }
