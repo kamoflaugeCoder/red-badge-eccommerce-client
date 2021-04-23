@@ -1,5 +1,11 @@
-// import { Button } from 'antd';
-import { SwitchClickEventHandler } from 'antd/lib/switch';
+import Button from '@material-ui/core/Button';
+// Types
+import  { CartItemType  } from '../../App';
+// styles
+import { Wrapper } from './Items.styles';
+
+
+// import { SwitchClickEventHandler } from 'antd/lib/switch';
 // import { CardDeck } from 'reactstrap';
 // import {
 //   Card, CardImg, CardText, CardBody,
@@ -7,14 +13,10 @@ import { SwitchClickEventHandler } from 'antd/lib/switch';
 // } from 'reactstrap';
 
 // import { Container, Row, Col } from 'reactstrap';
-import { Card, Button,Col, Row, Menu, Dropdown  } from 'antd';
-import { DownOutlined } from '@ant-design/icons';
-// Types
-import  { CartItemType  } from '../../App';
-import { Wrapper } from './Items.styles';
+// import { Card, Button,Col, Row, Menu, Dropdown  } from 'antd';
+// import { DownOutlined } from '@ant-design/icons';
 
-// styles
-import { Carousel } from 'antd';
+// import { Carousel } from 'antd';
 
 type Props = {
     item: CartItemType;
@@ -28,31 +30,39 @@ const contentStyle = {
   textAlign: 'center',
   background: '#364d79',
 };
-const { Meta } = Card;
-const Item: React.FC<Props> = ( {item, handleAddToCart,  }) => {
- 
-
-      
-      
-return(
-  <>
-  <Row>
-  <Card
-    style={{ width: 300}}
-      cover={<img alt= "" src={item.image} style={{width: "100%", height: "10vw", objectFit: "cover"}} />}
-      >
-      <Meta title= {item.title} description={item.description}/>${item.price}
-        <Button onClick={() => handleAddToCart(item)}>Add to cart</Button>
-        
-    </Card>
-    </Row> 
-</>
+// const { Meta } = Card;
+const Item: React.FC<Props> = ({item, handleAddToCart}) => (
+<Wrapper>
+  <img src={item.image} alt={item.title} />
+  <div>
+    <h3>{item.title}</h3>
+    <p>{item.description}</p>
+    <h3>${item.price}</h3>
+  </div>
+  <Button onClick={() => handleAddToCart(item)}>Add to cart</Button>
+</Wrapper>
+ );    
   
-)
-};
+      
+// return(
+//   <Wrapper>
+//   <Row>
+//   <Card
+//     style={{ width: 300}}
+//       cover={<img alt= "" src={item.image} style={{width: "100%", height: "10vw", objectFit: "cover"}} />}
+//       >
+//       <Meta title= {item.title} description={item.description}/>${item.price}
+//         <Button onClick={() => handleAddToCart(item)}>Add to cart</Button>
+        
+//     </Card>
+//     </Row> 
+// </Wrapper>
+  
 
 
-{/* <CardDeck>
+
+
+/* <CardDeck>
        <CardDeck>
          <CardImg top width="100%" src="/assets/256x186.svg" alt="Card image cap" />
          <CardBody>
@@ -71,6 +81,6 @@ return(
           <Button>Button</Button>
         </CardBody>
       </Card>
-    </CardDeck> */}
+    </CardDeck> */
 
     export default Item;

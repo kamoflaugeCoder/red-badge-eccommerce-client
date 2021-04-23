@@ -1,13 +1,18 @@
-import { Button } from 'antd';
+import { useState } from 'react'
+// import Button from '@material-ui/core/Button'
+// import Container from '@material-ui/core/Container';
 
-// import Login from './Login'
-// import Register from './Register'
+// import Login from '../LoginComponents/Login'
+// import Register from '../LoginComponents/Register'
 
-// const Auth = (props) => {
+// import './Login'
+// import './Register'
+
+const Auth = () => {
 
 //     // STATE
-//     const [username, setUsername] = useState('')
-//     const [password, setPassword] = useState('')
+//     const [username, setUsername] =('')
+//     const [password, setPassword] =('')
 //     const [login, setLogin] = useState(true)
 
 
@@ -35,7 +40,7 @@ import { Button } from 'antd';
 
 //     // LOGIC 
 //     // Allows for a display depending on toggle. Keep this for future code. Useful.
-//     const authTernary = () => {
+//     export default class authTernary extends Component{
 
 //       return login ? (
 //           <Login updateToken={props.updateToken} />
@@ -75,6 +80,6 @@ import { Button } from 'antd';
     
 //       </div>
 //     )
-// }
-// export default Auth;
+}
+export default Auth;
 

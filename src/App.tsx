@@ -1,45 +1,28 @@
-import React, { Component } from 'react';
-import { useQuery } from 'react-query';
-
-
+import { useEffect, useState } from 'react';
+ import { useQuery } from 'react-query'
+ import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
 // components
-import './components/item/Items';
-import Item from "./components/item/Items";
+// import "./components/LoginComponents/Login";
+import Header from './components/Header/Header';
+import Item from "./components/item/Item";
+import Cart from './components/cart/Cart'
+import Drawer from '@material-ui/core/Drawer';
 import "./components/item/Items.styles"
-import "./components/LoginComponents/Auth";
-import './components/theNavbar';
-
-import { Drawer, Radio, Space, Grid, Breadcrumb } from 'antd';
-import { Button, Popover, Typography } from 'antd';
-import { Row, Col, Divider } from 'antd';
-import { Badge, Card, Anchor } from 'antd';
-import { Spin, Alert, Menu, Dropdown } from 'antd';
-
-import { DownOutlined } from '@ant-design/icons';
-import { AppstoreOutlined, MailOutlined, SettingOutlined } from '@ant-design/icons';
+import Auth from "./components/LoginComponents/Auth";
 
 
 
-import {
-  HomeOutlined,
-  SettingFilled,
-  SmileOutlined,
-  SyncOutlined,
-  LoadingOutlined,
-} from '@ant-design/icons';
-
-// styles
+import LinearProgress from '@material-ui/core/LinearProgress';
+import Grid from '@material-ui/core/Grid';
+import AddShoppingCartIcon from '@material-ui/icons/AddShoppingCart';
+import Badge from '@material-ui/core/Badge';
+// Styles
 import { Wrapper, StyledButton } from './App.styles';
 import "./App.css";
-import { useState } from 'react';
 // import { isConstructorDeclaration } from 'typescript';
 // import { render } from '@testing-library/react';
-import { Layout } from 'antd';
-
-import { Avatar } from 'antd';
-import { UserOutlined } from '@ant-design/icons';
-import Icon from '@ant-design/icons/lib/components/AntdIcon';
-import IconContext from '@ant-design/icons/lib/components/Context';
+import CartItem from './components/cartItem/cartItem';
+import Login from './components/LoginComponents/Login';
 
 
 //Types
@@ -53,160 +36,135 @@ export type CartItemType = {
   amount: number;
 }
 
+
+
 const getProducts = async (): Promise<CartItemType[]> =>
  await (await fetch('https://fakestoreapi.com/products/',)).json();
 
-// fetch('https://fakestoreapi.com/products')
-//             .then(res=>res.json())
-//             .then(json=>console.log(json))
+
+
+function App (props:any){
+// TOKEN NEED TO BE UPDATED=============================
+  // const [sessionToken, setSessionToken] = useState("");
+
+  // useEffect(() => {
+  //   if (props.localStorage.getItem("token")) {
+  //     setSessionToken(props.localStorage.getItem("token"));
+  //   }
+  // }, [props.getItem]);
+
+  // const updateToken = (e:newToken) => {
+  //   localStorage.setItem("token", newToken);
+  //   setSessionToken(newToken);
+  //   console.log(sessionToken);
+  // };
+
+  // const clearToken = () => {
+  //   localStorage.clear();
+  //   setSessionToken("");
+  // };
+// =================================/
 
 
 
-// class App extends Component<{}, CartItemType>{
-// constructor (props:CartItemType){
-//   super(props);
-//   this.state = {
-//           id: 0,
-//           category:"",
-//           description: "",
-//           image: "",
-//           price: 0,
-//           title: "",
-//           amount: 0,
-//   };
-// };
-const App = ( ) =>{
-  const { Header, Footer, Sider, Content } = Layout;
-  const { SubMenu } = Menu;
+ 
   const[cartOpen, setCartOpen] = useState(false);
-  const [cartItems, setCartItems] = useState([] as CartItemType[])
-  const { data, isLoading, error,} = useQuery<CartItemType[]>(
+  const [cartItems, setCartItems] = useState([] as CartItemType[]);
+  const { data, isLoading, error} = useQuery<CartItemType[]>(
  'products', 
   getProducts
   );
  console.log(data);
 
-const getTotalItems = () => null;
+const getTotalItems = (items: CartItemType[]) =>
+items.reduce((ack: number, item) => ack + item.amount, 0);
 
-const handleAddToCart = (clickedItem: CartItemType) => null;
+const handleAddToCart = (clickedItem: CartItemType) => {
+  setCartItems(prev => {
+    // 1.Is the item already added in the cart?
+    const isItemInCart = prev.find(item => item.id === clickedItem.id);
 
-const handleRemoveFromCart = () => null;
+    if (isItemInCart) {
+      return prev.map(item => 
+        item.id === clickedItem.id
+        ? {...item, amount: item.amount + 1}
+        : item
+      );
+    }
+    // First time the item is added
+    return[...prev, {...clickedItem, amount: 1}];
+  });
+};
 
-if (isLoading) return < Spin />;
+const handleRemoveFromCart = (id: number) => {
+  setCartItems(prev => 
+    prev.reduce((ack, item) => {
+      if (item.id === id){
+        if (item.amount === 1) return ack;
+        return [...ack, {...item, amount: item.amount}];
+      }else{
+        return[...ack, item]
+      }
+    }, [] as CartItemType[])
+  )
+};
+
+if (isLoading) return < LinearProgress />;
 if (error) return <div> Something went wrong...</div>;
- 
-const content = (
-  <div>
-    <p>Content</p>
-    <p>Content</p>
-  </div>
-);
 
-const { Title } = Typography;
+
+ 
+// const protectedViews = () => {
+//   return sessionToken === localStorage.getItem("token") ? (
+//     <Router>
+//       <Switch>
+//         <Route exact path="/">
+//         <Drawer /> 
+//         </Route>
+//         {/* <Button variant="contained">Get Started</Button> */}
+
+//         <Route exact path="/Drawer">
+//             <Auth updateToken={updateToken} />
+//         </Route>
+
+//         <Route exact path="/item/item">
+//           <item token={sessionToken} />
+//         </Route>
+//       </Switch>
+//     </Router>
+//   ) : (
+//     <Drawer updateToken={updateToken} />
+//   );
+// };
 
     return (
-      // row
-//         <Card>  
-//           <Button type="primary">Test</Button>
-//    {data?.map(item => (
-// // col = width
-//      <Item item={item} handleAddToCart={handleAddToCart} />
-//      ))}
-//      </Card>
-
-        <>
-        
-        <Header style={{padding:10}}>
-        <Avatar style={{float:`right`}} size={64} icon={<UserOutlined />} />
-        <Title style={{color:'white'}} level={3}>Nutech Technologies, LLC</Title>
-        </Header>
-        <Layout>
-          <Sider>
-            <Menu 
-            defaultSelectedKeys={[`Dashboard`]}
-            mode="inline"
-            >
-              <Menu.Item key='Dashboard'>
-                Dashboard
-              </Menu.Item>
-              <SubMenu
-              title={
-                <span>
-                  {/* <Icon type="mail" /> */}
-                  <span>Go To...</span>
-                </span>
-              }
-              >
-                <Menu.ItemGroup key='AboutUS'title='About US'>
-                  <Menu.Item key='space1'>Space 1</Menu.Item>
-                  <Menu.Item key='space2'>Space 2</Menu.Item>
-                </Menu.ItemGroup>
-              </SubMenu>
-            </Menu>
-          </Sider>
-          </Layout>
-        <Content>
-        <Content style={{ padding: '0 50px' }}>
-      <Breadcrumb style={{ margin: '16px 0' }}>
-        <Breadcrumb.Item>Home</Breadcrumb.Item>
-        <Breadcrumb.Item>List</Breadcrumb.Item>
-        <Breadcrumb.Item>App</Breadcrumb.Item>
-      </Breadcrumb>
-      <div style= {{background: '#fff', padding: 24, minHeight: 500 }}>Content</div>
-    </Content>
-
-        <Row justify="space-around" align="middle">
-        {data?.map((item) => (
-          <Col span={6} style={{marginBottom: "40px"}}>
-            <Popover content={content} title="Title">
-            <Item item={item} handleAddToCart={handleAddToCart} />
-            <Button type="primary">Hover me</Button>
-           </Popover>,
-          </Col>
+      <Wrapper>
+        <div>
+          <Header />
+          <Login />
+        </div>
+        <Drawer anchor='right' open={cartOpen} onClose={() => setCartOpen(false)}>
+          <Cart 
+          cartItems={cartItems} 
+          addToCart={handleAddToCart} 
+          removeFromCart={handleRemoveFromCart}
+          />
+        </Drawer>
+        <StyledButton onClick={() => setCartOpen(true)}>
+        <Badge badgeContent={getTotalItems(cartItems)} color='error'>
+          <AddShoppingCartIcon />
+        </Badge>
+        </StyledButton>
+        <Grid container spacing={3}>
+        {data?.map(item => (
+        <Grid item key={item.id} xs={12} sm={4}>
+          <Item item={item} handleAddToCart={handleAddToCart} />
+        </Grid>
         ))}
-        </Row>
-        </Content>
-        
-        <Footer style={{textAlign: 'center', background:"red"}}>Created By Thomas Crowell 2021</Footer>
-        <Layout></Layout>
-        </>
-     
-     );
-   };
-            
+        </Grid>
+      </Wrapper>
+    );
+        }
+   
     
   export default App;
-
-
-
-{/* <CardDeck>  
-          <Button type="primary">Test</Button>
-   {data?.map(item => (
-// col = width
-     <Item item={item} handleAddToCart={handleAddToCart} />
-     ))}
-     </CardDeck> */}
-
-
-
-
-  //   return(
-  //     <div>
-  //       <Card>
-  //       <CardImg top width="100%" src="https://fakestoreapi.com/products" />
-  //       <CardBody>
-  //         <CardTitle tag="h5">Card title</CardTitle>
-  //         <CardSubtitle tag="h6" className="mb-2 text-muted">Card subtitle</CardSubtitle>
-  //         <CardText>This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</CardText>
-  //         <Button>Button</Button>
-  //       </CardBody>
-  //     </Card>
-  //     </div>
-  //   )
-  // }
-
-
-
-   
-
-
