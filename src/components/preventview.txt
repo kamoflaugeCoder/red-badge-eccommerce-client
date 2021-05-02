@@ -1,0 +1,79 @@
+import { useState, useEffect, Component } from "react";
+
+import "./App.css";
+import loginForm from "./LoginComponents/loginForm";
+import "../App";
+
+import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
+import Auth from "./LoginComponents/Auth";
+
+const [sessionToken, setSessionToken] = useState("");
+
+
+export default class preventView extends Component {
+    // constructor(props: {} | Readonly<{}>){
+    //     super(props);
+    //     this.state = {
+            
+    //     }
+    }
+
+//     render(){
+//         return(
+// <div className="App">
+//       <header className="App-header">
+//         {/* {protectedViews()} */}
+
+//         {/* Add all entires       */}
+//         {/* <ViewAllBeers /> */}
+
+//         {/* <Button variant="contained">Get Started</Button> */}
+//       </header>
+//     </div>
+//         )
+//     }
+
+//   useEffect(() => {
+//     if (localStorage.getItem("token")) {
+//       setSessionToken(localStorage.getItem("token"));
+//     }
+//   }, []);
+
+//   const updateToken = (newToken) => {
+//     localStorage.setItem("token", newToken);
+//     setSessionToken(newToken);
+//     console.log(sessionToken);
+//   };
+
+//   const clearToken = () => {
+//     localStorage.clear();
+//     setSessionToken("");
+//   };
+
+//   const protectedViews = () => {
+//     return sessionToken === localStorage.getItem("token") ? (
+//       <Router>
+//         <Switch>
+//           <Route exact path="/">
+//           <loginForm /> 
+//           </Route>
+//           {/* <Button variant="contained">Get Started</Button> */}
+
+//           <Route exact path="/dashboard">
+//               <Auth updateToken={updateToken} />
+//           </Route>
+
+//           <Route exact path="/Cards/viewBeer">
+//             <ViewBeer token={sessionToken} />
+//           </Route>
+//         </Switch>
+//       </Router>
+//     ) : (
+//       <GetStarted updateToken={updateToken} />
+//     );
+//   };
+
+//   return (
+    
+//   );
+// }

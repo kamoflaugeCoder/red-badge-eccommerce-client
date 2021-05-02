@@ -1,4 +1,4 @@
-import React, { useReducer, useEffect, useState, FormEvent } from 'react';
+import React, { useReducer, useEffect } from 'react';
 import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
 
 import TextField from '@material-ui/core/TextField';
@@ -7,9 +7,6 @@ import CardContent from '@material-ui/core/CardContent';
 import CardActions from '@material-ui/core/CardActions';
 import CardHeader from '@material-ui/core/CardHeader';
 import Button from '@material-ui/core/Button';
-
-const apiURL = 'https://fakestoreapi.com/products';
-
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -23,10 +20,6 @@ const useStyles = makeStyles((theme: Theme) =>
       marginTop: theme.spacing(2),
       flexGrow: 1
     },
-    registerBtn: {
-        marginTop: theme.spacing(2),
-        flexGrow: 1
-      },
     header: {
       textAlign: 'center',
       background: '#212121',
@@ -61,8 +54,7 @@ type Action = { type: 'setUsername', payload: string }
   | { type: 'setIsButtonDisabled', payload: boolean }
   | { type: 'loginSuccess', payload: string }
   | { type: 'loginFailed', payload: string }
-  | { type: 'setIsError', payload: boolean }
-//   | { type: 'setLogin', payload: string };
+  | { type: 'setIsError', payload: boolean };
 
 const reducer = (state: State, action: Action): State => {
   switch (action.type) {
@@ -101,41 +93,10 @@ const reducer = (state: State, action: Action): State => {
   }
 }
 
-interface LoginProps{
-    updateToken: (newToken: string) => void
-    // setSessionToken:React.Dispatch<React.SetStateAction<string>>
-
-}
-
-// interface handleSubmitProps 0502{
-//     setSessionToken:React.Dispatch<React.SetStateAction<string>>
-// }
-
-export default function Login(props: LoginProps){
+const Login = () => {
   const classes = useStyles();
   const [state, dispatch] = useReducer(reducer, initialState);
-  const [email, setEmail] = useState(''); 
-  const [password, setPassword] = useState('');
-  const [Login, setLogin] = useState('');
 
-// LOGIN FETCH RIGHT HERE==============================
-  const handleSubmit = async (e: FormEvent): Promise<void> => {
-    e.preventDefault();
-    fetch(`${apiURL}/user/login`, {
-      method: 'POST',
-      body: JSON.stringify({user:{email: email, password: password}}),
-      headers: new Headers({
-        'Content-Type': 'application/json'
-      })
-    }) .then(
-      (response) => response.json()
-    ) .then((data)=> {
-      props.updateToken(data.sessionToken)
-     
-    })
-    
-  }
-  
   useEffect(() => {
     if (state.username.trim() && state.password.trim()) {
      dispatch({
@@ -186,7 +147,7 @@ export default function Login(props: LoginProps){
       });
     }
   return (
-    <form className={classes.container} noValidate autoComplete="off" onSubmit= {handleSubmit}>
+    <form className={classes.container} noValidate autoComplete="off">
       <Card className={classes.card}>
         <CardHeader className={classes.header} title="Login App" />
         <CardContent>
@@ -226,18 +187,10 @@ export default function Login(props: LoginProps){
             disabled={state.isButtonDisabled}>
             Login
           </Button>
-          <Button 
-            variant="contained"
-            size="large"
-            color="secondary"
-            className={classes.registerBtn}
-            onClick={handleLogin}
-            disabled={state.isButtonDisabled}>
-            Register
-          </Button>
         </CardActions>
       </Card>
     </form>
   );
 }
 
+export default Login;

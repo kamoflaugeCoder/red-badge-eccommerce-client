@@ -1,6 +1,7 @@
 import CartItem from '../cartItem/cartItem';
 import {Wrapper} from './Cart.styles'
-import {CartItemType } from '../../App'
+import {CartItemType } from "../cartItem/CartItemType"
+// refresh
 
 type Props = {
     cartItems: CartItemType[];
