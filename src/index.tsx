@@ -2,7 +2,11 @@
 import ReactDOM from 'react-dom';
 import App from './App';
 import { QueryClient, QueryClientProvider } from 'react-query';
-// import 'bootstrap/dist/css/bootstrap.css';
+import Navbar from './home/navbar/Navbar';
+import ItemIndex from './components/item/itemindex';
+import ProductInput from './components/products/productInput';
+import Products from './components/products/Products';
+
 
 
 const client = new QueryClient();
@@ -10,8 +14,9 @@ const client = new QueryClient();
 ReactDOM.render(
   
   <QueryClientProvider client={client}>
+   
+    <Navbar />
     <App />
-    
   </QueryClientProvider>,
   document.getElementById('root')
 );

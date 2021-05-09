@@ -1,3 +1,4 @@
+import React, {Component} from 'react';
 import { FormEvent, useEffect, useState } from 'react';
  import { useQuery } from 'react-query'
  import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
@@ -5,7 +6,7 @@ import { FormEvent, useEffect, useState } from 'react';
 // import "./components/LoginComponents/Login";
 // import Header from './components/Header/Header';
 // import Item from "./components/item/Item";
-// import Cart from './components/cart/Cart'
+import Cart from '../cart/Cart'
 import Drawer from '@material-ui/core/Drawer';
 // import "./components/item/Items.styles"
 import Auth from "../LoginComponents/Auth";
@@ -21,21 +22,42 @@ import Badge from '@material-ui/core/Badge';
 import App from '../../App'
 import CartItem from '../cartItem/cartItem';
 import Login from '../LoginComponents/Login';
-import Header from '../navbar/Header';
-import Navbar from '../navbar/Navbar'
-import { Wrapper } from '../cart/Cart.styles';
+// import Footer from '../../navbar/Footer';
+import Navbar from '../../home/navbar/Navbar'
+import { Wrapper, StyledButton } from '../../App.styles';
 import Item from './Item';
-import { CartItemType } from '../cartItem/CartItemType'
+// import { CartItemType } from '../cartItem/CartItemType'
+import Product from '../products/Products';
+import { Props } from 'react';
+
+export type CartItemType = {
+  id: number;
+  category:string;
+  description: string;
+  image: string;
+  price: number;
+  title: string;
+  amount: number;
+}
 
 
-
-const apiURL = 'https://fakestoreapi.com/products'
+// const apiURL = 'https://fakestoreapi.com/products'
 
 
 export default function ItemIndex(props: any){
 
 const [cartItems, setCartItems] = useState([] as CartItemType[]);
+const [cartOpen, setCartOpen] = useState(false);
+const handleAddToCart = (item: CartItemType) => null;/*items: CartItemType[]*/
+const handleRemoveFromCart = (id: number) => null;
 
+
+const getTotalItems = (items: CartItemType[]) => 
+ items.reduce((ack: number, items) => ack + items.amount, 0);
+
+
+
+ 
 useEffect(()=> {
     fetch('http://localhost:5200/product')
     .then((res)=>res.json())
@@ -44,21 +66,42 @@ useEffect(()=> {
     })
   
 },[])
-  return (
-   
-    // <h1>ItemIndex</h1>
-<Grid container spacing={3}>
 
-        {cartItems.map(item => (
+
+
+// const Cart: React.FC<typeof props> = ({cartItems, addToCart, removeFromCart}) => {
+//   const calculateTotal = (items: CartItemType[]) =>
+//   items.reduce((ack: number, item) => ack + item.amount * item.price, 0);
+   
+  return (
+    // <h1>ItemIndex</h1>
+    <Wrapper>
+      <Drawer anchor='right' open={cartOpen} onClose={() => setCartOpen(false)}>
+        <Cart 
+        cartItems={cartItems} 
+        addToCart={handleAddToCart}
+        removeFromCart={handleRemoveFromCart}
+         />
+        </Drawer>
+         <StyledButton onClick={() => setCartOpen(true)}> 
+          <Badge badgeContent={getTotalItems(cartItems)} color='error'>
+            <AddShoppingCartIcon />
+          </Badge>
+        </StyledButton> 
+        <Grid container spacing={3}>
+        {cartItems.map((item: { id: any; category: string; description: string; image: string; price: number; title: string; amount: number; }) => (
         <Grid item key={item.id} xs={12} sm={4}>
-          {/* <Item item={item} handleAddToCart={handleAddToCart} token={props.token} /> */}
-            <Item item={item} token={props.token} />
-            
+          {/* <ProductInput /> */}
+          <Item item={item} handleAddToCart={handleAddToCart} token={props.token} />
+            {/* <Item item={item} token={props.token} /> */}
         </Grid>
         ))}
         </Grid>
+        </Wrapper>
+        
   )
-}
+        }
+
   
   
 
@@ -93,18 +136,7 @@ useEffect(()=> {
 //   });
 // };
 
-// const handleRemoveFromCart = (id: number) => {
-//   setCartItems(prev => 
-//     prev.reduce((ack: any, item: { id: number; amount: number; }) => {
-//       if (item.id === id){
-//         if (item.amount === 1) return ack;
-//         return [...ack, {...item, amount: item.amount}];
-//       }else{
-//         return[...ack, item]
-//       }
-//     }, [] as CartItemType[])
-//   )
-// };
+
 
 // if (isLoading) return < LinearProgress />;
 // if (error) return <div> Something went wrong...</div>;
@@ -142,6 +174,9 @@ useEffect(()=> {
 
 
     
+
+
+
     // return (
     //     <div>
     //         <h1>Item Index</h1>

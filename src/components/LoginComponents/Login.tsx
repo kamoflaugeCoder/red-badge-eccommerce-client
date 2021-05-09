@@ -62,6 +62,9 @@ type Action = { type: 'setUsername', payload: string }
   | { type: 'loginSuccess', payload: string }
   | { type: 'loginFailed', payload: string }
   | { type: 'setIsError', payload: boolean }
+  | { type: 'registerSuccess', payload: string }
+  | { type: 'registerFailed', payload: string }
+
 //   | { type: 'setLogin', payload: string };
 
 const reducer = (state: State, action: Action): State => {
@@ -98,14 +101,32 @@ const reducer = (state: State, action: Action): State => {
         ...state,
         isError: action.payload
       };
+      case 'registerSuccess': 
+      return {
+        ...state,
+        helperText: action.payload,
+        isError: true
+      };
+      case 'registerFailed': 
+      return {
+        ...state,
+        helperText: action.payload,
+        isError: true
+      };
   }
 }
 
 interface LoginProps{
-    updateToken: (newToken: string) => void
-    // setSessionToken:React.Dispatch<React.SetStateAction<string>>
+    updateToken: (newToken: string) => void;
+    // setSessionToken: (newToken: string) => void;
 
-}
+};
+
+// interface RegisterProps{
+//     updateToken: (newToken: string) => void;
+//     setSessionToken: (newToken: string) => void;
+
+// };
 
 // interface handleSubmitProps 0502{
 //     setSessionToken:React.Dispatch<React.SetStateAction<string>>
@@ -118,23 +139,29 @@ export default function Login(props: LoginProps){
   const [password, setPassword] = useState('');
   const [Login, setLogin] = useState('');
 
+
 // LOGIN FETCH RIGHT HERE==============================
-  const handleSubmit = async (e: FormEvent): Promise<void> => {
+  const handleSubmit = (e: any) => {
     e.preventDefault();
-    fetch(`${apiURL}/user/login`, {
+    fetch(`http://localhost:5200/user/login`, {
       method: 'POST',
       body: JSON.stringify({user:{email: email, password: password}}),
-      headers: new Headers({
+      headers:{
         'Content-Type': 'application/json'
-      })
+      }
     }) .then(
       (response) => response.json()
     ) .then((data)=> {
       props.updateToken(data.sessionToken)
-     
+     console.log(data)
     })
     
   }
+
+  // const handleSubmit = (e: any) => {
+  //   e.preventDefault()
+  //   fetch("http:")
+  // }
   
   useEffect(() => {
     if (state.username.trim() && state.password.trim()) {
@@ -145,7 +172,7 @@ export default function Login(props: LoginProps){
     } else {
       dispatch({
         type: 'setIsButtonDisabled',
-        payload: true
+        payload: false
       });
     }
   }, [state.username, state.password]);
@@ -159,6 +186,20 @@ export default function Login(props: LoginProps){
     } else {
       dispatch({
         type: 'loginFailed',
+        payload: 'Incorrect username or password'
+      });
+    }
+  };
+
+  const handleRegister = () => {
+    if (state.username === 'abc@email.com' && state.password === 'password') {
+      dispatch({
+        type: 'registerSuccess',
+        payload: 'Registered Successfully'
+      });
+    } else {
+      dispatch({
+        type: 'registerFailed',
         payload: 'Incorrect username or password'
       });
     }
@@ -194,12 +235,13 @@ export default function Login(props: LoginProps){
             <TextField
               error={state.isError}
               fullWidth
-              id="username"
+              id="email"
               type="email"
-              label="Username"
-              placeholder="Username"
+              label="email"
+              placeholder="email"
+              value = {email}
               margin="normal"
-              onChange={handleUsernameChange}
+              onChange={(e) => setEmail(e.target.value)}
               onKeyPress={handleKeyPress}
             />
             <TextField
@@ -211,7 +253,7 @@ export default function Login(props: LoginProps){
               placeholder="Password"
               margin="normal"
               helperText={state.helperText}
-              onChange={handlePasswordChange}
+              onChange={(e) => setPassword(e.target.value)}
               onKeyPress={handleKeyPress}
             />
           </div>
@@ -223,18 +265,20 @@ export default function Login(props: LoginProps){
             color="secondary"
             className={classes.loginBtn}
             onClick={handleLogin}
-            disabled={state.isButtonDisabled}>
+            type = "submit"
+            >
             Login
           </Button>
-          <Button 
+          {/* <Button 
             variant="contained"
             size="large"
             color="secondary"
             className={classes.registerBtn}
-            onClick={handleLogin}
-            disabled={state.isButtonDisabled}>
+            onClick={handleRegister}
+            type = "submit"
+            >
             Register
-          </Button>
+          </Button> */}
         </CardActions>
       </Card>
     </form>

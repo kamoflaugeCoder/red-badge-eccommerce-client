@@ -1,124 +1,73 @@
-import { Component, CSSProperties } from 'react'
-import Button from '@material-ui/core/Button'
-import Container from '@material-ui/core/Container';
+import React, { Component } from "react";
+import  Register from "./Register";
+import Login from "./Login";
+import { Button } from "@material-ui/core";
 
-import Login from '../LoginComponents/Login'
-import Register from '../LoginComponents/Register'
+type LoginProps = {
+    updateToken: (newToken: string) => void;
+    // updateRole: (newUserIsAdmin: string) => void;
+};
 
-interface exceptedProps{
-    // token:any
-    updateToken:(newToken:string) => void
-}
+// type Register = {
+//    updateToken: (newToken: string) => void;
+//     // updateRole: (newUserIsAdmin: string) => void;  
+// }
 
+type UserState = {
+    showLogin: boolean;
+};
 
-interface AuthState {
-    username: string,
-    password: string,
-    login: boolean,
-    register: boolean
-}
-export default class Auth extends Component<exceptedProps, AuthState>{
-    [x: string]: any;
-    buttonPink: any;
-    buttonDark: CSSProperties | undefined;
-    containerStyles: CSSProperties | undefined;
-    constructor(props: any) {
+export default class Auth extends Component<LoginProps, UserState> {
+    constructor(props: LoginProps) {
         super(props);
-         // STATE
         this.state = {
-            username: '',
-            password: '',
-            login: true,
-            register: true
+            showLogin: false,
+        };
+    }
+    loginToggle = (event: any) => {
+        event.preventDefault();
+        if (this.state.showLogin === false) {
+            return this.setState({
+                showLogin: true
+            });
         }
-    }
-   
-
-    // STYLES 
-    //  buttonPink = {
-    //   marginTop: '30px',
-    //   marginLeft: 'auto',
-    //   marginRight: 'auto',
-    //   width: '90%',
-      
-    // }
-    
-    // const buttonDark = {
-    //   marginTop: '30px',
-    //   backgroundColor: '#101f27',
-    //   marginLeft: 'auto',
-    //   marginRight: 'auto',
-    //   width: '90%',
-    // }
-
-    // const containerStyles = {
-    //   display: 'grid',
-    // }
-
-
-    // LOGIC 
-    // Allows for a display depending on toggle. Keep this for future code. Useful.
-    
-    authTernary(){
-      return this.state.login ? (
-        // updateToken={updateToken}
-        //   <Login />
-    null
-      ) : (
-          this.state.register 
-      
-      
-      );
-
-      function setLogin() {
-        throw new Error('Function not implemented.');
-    }
-    
-    function setUsername(arg0: any, string: any) {
-        throw new Error('Function not implemented.');
-    }
-    
-    function setPassword(arg0: any, string: any) {
-        throw new Error('Function not implemented.');
-    }
-    
-    function arg0(arg0: any, string: any) {
-        throw new Error('Function not implemented.');
+        if (this.state.showLogin === true) {
+            return this.setState({
+                showLogin: false
+            });
+        }
+    };
+    render() {
+        return (
+            <div>
+                <div>
+                    {this.state.showLogin ? (
+                        <div>
+                            <Register
+                                updateToken={this.props.updateToken}
+                                // updateRole={this.props.updateRole}
+                            />
+                        </div>
+                    ) : (
+                        <div>
+                            <Login
+                                updateToken={this.props.updateToken}
+                                // updateRole={this.props.updateRole}
+                            />
+                        </div>
+                    )}
+                    <br />
+                    <Button
+                        variant="contained"
+                        onClick={(e) => {
+                            this.loginToggle(e);
+                        }}
+                    >
+                        {this.state.showLogin ? "Login" : "Register"}
+                    </Button>
+                </div>
+            </div>
+        );
     }
 
-      }
-    }
-
-
-
-// setLogin(arg0: boolean) {
-//     throw new Error('Function not implemented.');
-// }
-
-//  setUsername(arg0: string) {
-//     throw new Error('Function not implemented.');
-// }
-
-//  setPassword(arg0: string) {
-//     throw new Error('Function not implemented.');
-// }
-
-//+++++++++++++++++=++===++++++==+++=+=+=====+=++++=+++
-
-// function setLogin() {
-//     throw new Error('Function not implemented.');
-// }
-
-// function setUsername(arg0: any, string: any) {
-//     throw new Error('Function not implemented.');
-// }
-
-// function setPassword(arg0: any, string: any) {
-//     throw new Error('Function not implemented.');
-// }
-
-// function arg0(arg0: any, string: any) {
-//     throw new Error('Function not implemented.');
-// }
-
-
+}
