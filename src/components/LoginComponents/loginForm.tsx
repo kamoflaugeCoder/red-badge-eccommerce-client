@@ -183,9 +183,9 @@ const Login = () => {
             size="large"
             color="secondary"
             className={classes.loginBtn}
-            onClick={handleLogin}
+            onClick={handleLogin} /* needs to link to FETCH for LOGIN  */
             disabled={state.isButtonDisabled}>
-            Login
+            Login!
           </Button>
         </CardActions>
       </Card>

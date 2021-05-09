@@ -1,27 +1,27 @@
 import Button from '@material-ui/core/Button';
 // Types
-import  { CartItemType  } from '../cartItem/CartItemType';
+
 // styles
 import { Wrapper } from './Items.styles';
 // import LoginForm from '../LoginComponents/loginForm'
 
-
-// import { SwitchClickEventHandler } from 'antd/lib/switch';
-// import { CardDeck } from 'reactstrap';
-// import {
-//   Card, CardImg, CardText, CardBody,
-//   CardTitle, CardSubtitle, Button, CardDeck, CardGroup
-// } from 'reactstrap';
-
-// import { Container, Row, Col } from 'reactstrap';
-
-
+//Types
+export type CartItemType = {
+  id: number;
+  category:string;
+  description: string;
+  image: string;
+  price: number;
+  title: string;
+  amount: number;
+  
+}
 
 
 type Props = {
     item: CartItemType;
-    // handleAddToCart: (clickedItem: CartItemType) => void;
-    token:any
+    handleAddToCart: (clickedItem: CartItemType) => void;
+    token:string
 }
 
 const contentStyle = {
@@ -32,8 +32,39 @@ const contentStyle = {
   background: '#364d79',
 };
 
-const Item: React.FC<Props> = ({item,}) => (
-  
+function handleAddToCart(item: CartItemType): void {
+  throw new Error('Function not implemented.');
+}
+
+const Item: React.FC<Props> = ({item, handleAddToCart, token }) => {  /*handleAddToCart*/
+
+  const handleDelete = (e:any) => {
+		e.preventDefault();
+
+		fetch(`http://localhost:5200/product/delete`, {
+			/*${apiURL}*/
+			method: 'DELETE',
+			
+			headers:new Headers({
+        'Content-Type': 'application/json', 
+        "Authorization" :token
+      })
+		})
+			.then((response) => response.json())
+			.then((data) => {
+        // console.log(data)
+        // setCategory('')
+        // setTitle('')
+        // setDescription('')
+        // setImage('')
+        // setPrice('')
+        // setAmount('')
+
+				// props.updateToken(data.sessionToken); /* Probably not right functionality */
+			});
+	};
+
+return(  
 <Wrapper>
   <img src={item.image} alt={item.title} />
   <div>
@@ -41,48 +72,15 @@ const Item: React.FC<Props> = ({item,}) => (
     <p>{item.description}</p>
     <h3>${item.price}</h3>
   </div>
-  {/* <Button onClick={() => handleAddToCart(item)}>Add to cart</Button> */}
+  <Button onClick={() => handleAddToCart(item)}>Add to cart</Button>
+  <Button onClick={() => handleDelete(item)}>Delete</Button>
+  
 </Wrapper>
- );    
-  
-      
-// return(
-//   <Wrapper>
-//   <Row>
-//   <Card
-//     style={{ width: 300}}
-//       cover={<img alt= "" src={item.image} style={{width: "100%", height: "10vw", objectFit: "cover"}} />}
-//       >
-//       <Meta title= {item.title} description={item.description}/>${item.price}
-//         <Button onClick={() => handleAddToCart(item)}>Add to cart</Button>
-        
-//     </Card>
-//     </Row> 
-// </Wrapper>
-  
 
 
-
-
-/* <CardDeck>
-       <CardDeck>
-         <CardImg top width="100%" src="/assets/256x186.svg" alt="Card image cap" />
-         <CardBody>
-           <CardTitle tag="h5">Card title</CardTitle>
-           <CardSubtitle tag="h6" className="mb-2 text-muted">Card subtitle</CardSubtitle>
-           <CardText>This card has supporting text below as a natural lead-in to additional content.</CardText>
-           <Button>Button</Button>
-         </CardBody>
-       </CardDeck>
-       <Card>
-        <CardImg top width="100%" src="/assets/256x186.svg" alt="Card image cap" />
-        <CardBody>
-           <CardTitle tag="h5">Card title</CardTitle>
-           <CardSubtitle tag="h6" className="mb-2 text-muted">Card subtitle</CardSubtitle>
-          <CardText>This is a wider card with supporting text below as a natural lead-in to additional content. This card has even longer content than the first to show that equal height action.</CardText>
-          <Button>Button</Button>
-        </CardBody>
-      </Card>
-    </CardDeck> */
+)
+}
 
     export default Item;
+
+
