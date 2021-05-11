@@ -2,10 +2,12 @@
 import ReactDOM from 'react-dom';
 import App from './App';
 import { QueryClient, QueryClientProvider } from 'react-query';
-import Navbar from './home/navbar/Navbar';
-import ItemIndex from './components/item/itemindex';
-import ProductInput from './components/products/productInput';
-import Products from './components/products/Products';
+import Navbar from './navbar/Navbar';
+// import ItemIndex from './components/item/itemindex';
+// import ProductInput from './components/products/productInput';
+// import Products from './components/products/Products';
+import SideBar from './navbar/Sidebar'
+import Sidebar from './navbar/Sidebar';
 
 
 

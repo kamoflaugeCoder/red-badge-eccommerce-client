@@ -1,4 +1,6 @@
 import Button from '@material-ui/core/Button';
+import { Category } from '@material-ui/icons';
+import { Link } from 'react-router-dom';
 // Types
 
 // styles
@@ -16,12 +18,11 @@ export type CartItemType = {
   amount: number;
   
 }
-
-
 type Props = {
     item: CartItemType;
     handleAddToCart: (clickedItem: CartItemType) => void;
     token:string
+    fetchProducts:() => void;
 }
 
 const contentStyle = {
@@ -32,37 +33,32 @@ const contentStyle = {
   background: '#364d79',
 };
 
-function handleAddToCart(item: CartItemType): void {
-  throw new Error('Function not implemented.');
-}
+// function handleAddToCart(item: CartItemType): void {
+//   throw new Error('Function not implemented.');
+// }
 
-const Item: React.FC<Props> = ({item, handleAddToCart, token }) => {  /*handleAddToCart*/
+const Item: React.FC<Props> = ({item, handleAddToCart, token, fetchProducts }) => { 
 
-  const handleDelete = (e:any) => {
-		e.preventDefault();
+const handleDelete = (item:any) => {
 
-		fetch(`http://localhost:5200/product/delete`, {
+
+		fetch(`http://localhost:5200/product/${item.id}`, {
 			/*${apiURL}*/
 			method: 'DELETE',
 			
 			headers:new Headers({
         'Content-Type': 'application/json', 
-        "Authorization" :token
+        "Authorization": token
       })
 		})
 			.then((response) => response.json())
 			.then((data) => {
-        // console.log(data)
-        // setCategory('')
-        // setTitle('')
-        // setDescription('')
-        // setImage('')
-        // setPrice('')
-        // setAmount('')
-
-				// props.updateToken(data.sessionToken); /* Probably not right functionality */
+        fetchProducts()
 			});
 	};
+
+  
+
 
 return(  
 <Wrapper>
@@ -72,9 +68,11 @@ return(
     <p>{item.description}</p>
     <h3>${item.price}</h3>
   </div>
-  <Button onClick={() => handleAddToCart(item)}>Add to cart</Button>
-  <Button onClick={() => handleDelete(item)}>Delete</Button>
   
+  
+
+  <Button type="button" onClick={() => handleAddToCart(item)}>Add to cart</Button>
+  <Button onClick={() => handleDelete(item)}>Delete</Button>
 </Wrapper>
 
 
@@ -82,5 +80,7 @@ return(
 }
 
     export default Item;
+
+
 
 

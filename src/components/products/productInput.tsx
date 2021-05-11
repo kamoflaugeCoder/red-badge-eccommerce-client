@@ -7,16 +7,16 @@ import Container from '@material-ui/core/Container';
 import Box from '@material-ui/core/Box';
 
 
-type useState = {
-	category: string;
-	title: string;
-	description: boolean;
-	helperText: string;
-	isError: boolean;
-	registerSuccess: string;
-	registerFailed: string;
-  dispatch:boolean
-};
+// type useState = {
+// 	category: string;
+// 	title: string;
+// 	description: boolean;
+// 	helperText: string;
+// 	isError: boolean;
+// 	registerSuccess: string;
+// 	registerFailed: string;
+//   dispatch:boolean
+// };
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({

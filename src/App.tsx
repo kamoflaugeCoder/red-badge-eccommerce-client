@@ -7,7 +7,7 @@ import Item from './components/item/Item';
 import Button from '@material-ui/core/Button';
 // import Navbar from './navbar/Navbar';
 import Cart from './components/cart/Cart';
-import Navbar from './home/navbar/Navbar';
+import Navbar from './navbar/Navbar';
 
 import ItemIndex from './components/item/itemindex';
 import Auth from './components/LoginComponents/Auth';

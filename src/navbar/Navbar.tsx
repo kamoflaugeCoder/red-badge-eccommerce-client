@@ -5,9 +5,11 @@ import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import IconButton from '@material-ui/core/IconButton';
 import MenuIcon from '@material-ui/icons/Menu';
-import AccountCircle from '@material-ui/icons/AccountCircle';
+// import AccountCircle from '@material-ui/icons/AccountCircle';
 import MenuItem from '@material-ui/core/MenuItem';
 import Menu from '@material-ui/core/Menu';
+import { Link } from 'react-router-dom';
+import SideBar from './Sidebar'
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -22,6 +24,13 @@ const useStyles = makeStyles((theme: Theme) =>
     },
   }),
 );
+
+function refreshPage() {
+  setTimeout(()=>{
+      window.location.reload(false);
+  }, 500);
+  console.log('page to reload')
+}
 
 export default function Navbar() {
   const classes = useStyles();
@@ -38,13 +47,20 @@ export default function Navbar() {
     setAnchorEl(null);
   };
 
+
+  const clearToken = () => {
+    localStorage.clear();
+    setSessionToken('') 
+  }
+  
+
   return (
     <div className={classes.root}>
       <AppBar position="static">
         <Toolbar>
           <Typography variant="h6" className={classes.title}>
-           Nutech
-          </Typography>
+           Welcome to NuTech
+                </Typography>
             <div>
               <IconButton edge="start" className={classes.menuButton} color="inherit" aria-label="menu" onClick={handleMenu}>
             <MenuIcon />
@@ -64,9 +80,11 @@ export default function Navbar() {
                 open={open}
                 onClose={handleClose}
               >
+                
                 <MenuItem onClick={handleClose}>Profile</MenuItem>
                 <MenuItem onClick={handleClose}>My account</MenuItem>
                 <MenuItem onClick={handleClose}>Orders</MenuItem>
+              
               </Menu>
             </div>
         </Toolbar>
@@ -74,3 +92,7 @@ export default function Navbar() {
     </div>
   );
  }
+function setSessionToken(arg0: string) {
+  throw new Error('Function not implemented.');
+}
+
