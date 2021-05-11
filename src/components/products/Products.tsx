@@ -87,7 +87,7 @@ const Products: React.FC<Productprops>=({token}) => {
       <Grid container spacing={3}>
         {data?.map(item => (
           <Grid item key={item.id} xs={12} sm={4}>
-            <Item item={item} handleAddToCart={handleAddToCart}token={token} />
+            {/* <Item item={item} handleAddToCart={handleAddToCart}token={token} /> */}
           </Grid>
         ))}
       </Grid>
