@@ -118,6 +118,7 @@ const reducer = (state: State, action: Action): State => {
 
 interface LoginProps{
     updateToken: (newToken: string) => void;
+    updateUserRole: any;
     // setSessionToken: (newToken: string) => void;
 
 };
@@ -153,6 +154,7 @@ export default function Login(props: LoginProps){
       (response) => response.json()
     ) .then((data)=> {
       props.updateToken(data.sessionToken)
+      props.updateUserRole(data.user.userRole)
      console.log(data)
     })
     
@@ -191,19 +193,19 @@ export default function Login(props: LoginProps){
     }
   };
 
-  const handleRegister = () => {
-    if (state.username === 'abc@email.com' && state.password === 'password') {
-      dispatch({
-        type: 'registerSuccess',
-        payload: 'Registered Successfully'
-      });
-    } else {
-      dispatch({
-        type: 'registerFailed',
-        payload: 'Incorrect username or password'
-      });
-    }
-  };
+  // const handleRegister = () => {
+  //   if (state.username === 'abc@email.com' && state.password === 'password') {
+  //     dispatch({
+  //       type: 'registerSuccess',
+  //       payload: 'Registered Successfully'
+  //     });
+  //   } else {
+  //     dispatch({
+  //       type: 'registerFailed',
+  //       payload: 'Incorrect username or password'
+  //     });
+  //   }
+  // };
 
   const handleKeyPress = (event: React.KeyboardEvent) => {
     if (event.keyCode === 13 || event.which === 13) {

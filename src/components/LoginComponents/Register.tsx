@@ -118,7 +118,8 @@ const reducer = (state: State, action: Action): State => {
 }
 
 interface RegisterProps{
-    updateToken: (newToken: string) => void
+    updateToken: (newToken: string) => void;
+    updateUserRole: any;
     // setSessionToken:React.Dispatch<React.SetStateAction<string>>
 
 }
@@ -143,6 +144,8 @@ interface RegisterProps{
             (response) => response.json()
           ) .then((data)=> {
             props.updateToken(data.sessionToken)
+            props.updateUserRole(data.user.userRole)
+            console.log(data)
            
           })
           

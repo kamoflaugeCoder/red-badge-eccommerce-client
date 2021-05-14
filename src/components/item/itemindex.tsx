@@ -23,12 +23,13 @@ import App from '../../App'
 import CartItem from '../cartItem/cartItem';
 import Login from '../LoginComponents/Login';
 // import Footer from '../../navbar/Footer';
-import Navbar from '../../navbar/Navbar'
+import Navbar1 from "../../navbar/Navbar1"
 import { Wrapper, StyledButton } from '../../App.styles';
 import Item from './Item';
 // import { CartItemType } from '../cartItem/CartItemType'
 import Product from '../products/Products';
 import { Props } from 'react';
+import Sidebar from '../../navbar/Sitebar';
 
 export type CartItemType = {
   id: number;
@@ -56,7 +57,7 @@ const getTotalItems = (items: CartItemType[]) =>
  items.reduce((ack: number, items) => ack + items.amount, 0);
 
 
-function fetchProducts(){
+function getProducts(){
   fetch('http://localhost:5200/product')
   .then((res)=>res.json())
   .then((json)=> {console.log(json)
@@ -65,7 +66,7 @@ function fetchProducts(){
 }
 useEffect(()=> {
     
-    fetchProducts()
+    getProducts()
   
 },[])
 
@@ -93,9 +94,9 @@ useEffect(()=> {
         <Grid container spacing={3}>
         {cartItems.map((item: { id: any; category: string; description: string; image: string; price: number; title: string; amount: number; }) => (
         <Grid item key={item.id} xs={12} sm={4}>
-          {/* <ProductInput /> */}
-          <Item item={item} handleAddToCart={handleAddToCart} token={props.token}fetchProducts={fetchProducts} />
-            {/* <Item item={item} token={props.token} /> */}
+        
+          <Item item={item} handleAddToCart={handleAddToCart} token={props.token}getProducts={getProducts} />
+            {/* <Item item={item} token={props.token} />  */}
         </Grid>
         ))}
         </Grid>
