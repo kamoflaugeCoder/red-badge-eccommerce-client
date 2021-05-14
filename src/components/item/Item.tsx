@@ -1,11 +1,24 @@
 import Button from '@material-ui/core/Button';
 import { Category } from '@material-ui/icons';
 import { Link } from 'react-router-dom';
+import { Badge, Form } from 'reactstrap';
 // Types
 
 // styles
 import { Wrapper } from './Items.styles';
 // import LoginForm from '../LoginComponents/loginForm'
+
+import React, { useState } from 'react';
+import { ButtonDropdown, DropdownToggle, DropdownMenu, DropdownItem } from 'reactstrap';
+
+
+import ReactDOM from 'react-dom';
+import 'antd/dist/antd.css';
+// import './index.css';
+import { Menu, Dropdown } from 'antd';
+import { DownOutlined } from '@ant-design/icons';
+import ProductReview from '../products/productReviews';
+
 
 //Types
 export type CartItemType = {
@@ -22,7 +35,8 @@ type Props = {
     item: CartItemType;
     handleAddToCart: (clickedItem: CartItemType) => void;
     token:string
-    fetchProducts:() => void;
+    getProducts:() => void;
+    
 }
 
 const contentStyle = {
@@ -33,18 +47,16 @@ const contentStyle = {
   background: '#364d79',
 };
 
-// function handleAddToCart(item: CartItemType): void {
-//   throw new Error('Function not implemented.');
-// }
+const handleSubmit = () => {
 
-const Item: React.FC<Props> = ({item, handleAddToCart, token, fetchProducts }) => { 
+}
+const Item: React.FC<Props> = ({item, handleAddToCart, token, getProducts }) => { 
 
-const handleDelete = (item:any) => {
+const handleEdit = (item:any) => {
 
-
-		fetch(`http://localhost:5200/product/${item.id}`, {
+fetch(`http://localhost:5200/product/edit`, {
 			/*${apiURL}*/
-			method: 'DELETE',
+			method: 'UPDATE',
 			
 			headers:new Headers({
         'Content-Type': 'application/json', 
@@ -53,12 +65,37 @@ const handleDelete = (item:any) => {
 		})
 			.then((response) => response.json())
 			.then((data) => {
-        fetchProducts()
+        // getProducts()
+			
+      })
+};
+
+const handleDelete = (item:any) => {
+		fetch(`http://localhost:5200/product/${item.id}`, {
+			/*${apiURL}*/
+			method: 'DELETE',
+			headers:new Headers({
+        'Content-Type': 'application/json', 
+        "Authorization": token
+      })
+		})
+			.then((response) => response.json())
+			.then((data) => {
+        getProducts()
 			});
 	};
 
+  const menu = (
+    <Menu>
+      <div className="form-group">
+    <label htmlFor="exampleFormControlTextarea1"></label>
+    <textarea className="form-control" id="exampleFormControlTextarea1"></textarea>
+    <ProductReview />
+    <Button type="button" onClick={() => handleSubmit()}>SUBMIT</Button>
+  </div>
+    </Menu>
+  );
   
-
 
 return(  
 <Wrapper>
@@ -68,12 +105,18 @@ return(
     <p>{item.description}</p>
     <h3>${item.price}</h3>
   </div>
-  
-  
+
+ 
+  <Dropdown overlay={menu}>
+    <a className="ant-dropdown-link" onClick={e => e.preventDefault()}>
+      Give review here<DownOutlined />
+    </a>
+  </Dropdown>,
 
   <Button type="button" onClick={() => handleAddToCart(item)}>Add to cart</Button>
   <Button onClick={() => handleDelete(item)}>Delete</Button>
 </Wrapper>
+
 
 
 )
