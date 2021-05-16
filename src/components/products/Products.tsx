@@ -21,11 +21,15 @@ export type CartItemType = {
   title: string;
   amount: number;
 };
-type Productprops= {token:string}
+type Productprops= {
+  token:string;
+  createReview: any;
+  postReview: any;
+}
 const getProducts = async (): Promise<CartItemType[]> =>
   await (await fetch('https://fakestoreapi.com/products')).json();
 
-const Products: React.FC<Productprops>=({token}) => {
+const Products: React.FC<Productprops>=({token, postReview, createReview}) => {
   const [cartOpen, setCartOpen] = useState(false);
   const [cartItems, setCartItems] = useState([] as CartItemType[]);
   const { data, isLoading, error } = useQuery<CartItemType[]>(
@@ -72,28 +76,29 @@ const Products: React.FC<Productprops>=({token}) => {
 
   return (
     <Wrapper>
-      <Drawer anchor='right' open={cartOpen} onClose={() => setCartOpen(false)}>
+      {/* <Drawer anchor='right' open={cartOpen} onClose={() => setCartOpen(false)}>
         <Cart
           cartItems={cartItems}
           addToCart={handleAddToCart}
           removeFromCart={handleRemoveFromCart}
         />
-      </Drawer>
+      </Drawer> */}
       <StyledButton onClick={() => setCartOpen(true)}>
         <Badge badgeContent={getTotalItems(cartItems)} color='error'>
-          <AddShoppingCartIcon />
+          {/* <AddShoppingCartIcon /> */}
         </Badge>
       </StyledButton>
       <Grid container spacing={3}>
         {data?.map(item => (
           <Grid item key={item.id} xs={12} sm={4}>
-            <Item getProducts={getProducts} item={item} handleAddToCart={handleAddToCart}token={token} />
+            <Item getProducts={getProducts} item={item} handleAddToCart={handleAddToCart}token={token} createReview={createReview} postReview={postReview} />
           </Grid>
         ))}
       </Grid>
     </Wrapper>
   );
 };
+
 
 
 export default Products;

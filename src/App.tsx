@@ -86,7 +86,7 @@ function App() {
 				</Router>
 				<ProductInput token={sessionToken} />
 				<ItemIndex token={sessionToken} />
-				<Products token={sessionToken} />
+				{/* <Products token={sessionToken} /> */}
 				
 			</div>
 		) : (
