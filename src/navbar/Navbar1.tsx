@@ -62,55 +62,13 @@ const Navbar1 = (props: any) => {
 		setIsOpen(newIsOpen);
 	};
 
-  const adminButton = () => {
-    if (localStorage.getItem("userRole") === "Admin") {
-      return (
-        <button>Admin</button>
-      )
-    }
-  }
+	const adminButton = () => {
+		if (localStorage.getItem('userRole') === 'Admin') {
+			return <button>Admin</button>;
+		}
+	};
 
 	return (
-		// <div className={classes.root}>
-		// 	<AppBar position="static">
-		// 		<Toolbar>
-		// 			<Typography variant="h6" className={classes.title}>
-		// 				Welcome to NuTech
-		// 			</Typography>
-		// 			<div>
-		// 				<IconButton
-		// 					edge="start"
-		// 					className={classes.menuButton}
-		// 					color="inherit"
-		// 					aria-label="menu"
-		// 					onClick={handleMenu}
-		// 				>
-		// 					<MenuIcon />
-		// 				</IconButton>
-		// 				<Menu
-		// 					id="menu-appbar"
-		// 					anchorEl={anchorEl}
-		// 					anchorOrigin={{
-		// 						vertical: 'top',
-		// 						horizontal: 'right'
-		// 					}}
-		// 					keepMounted
-		// 					transformOrigin={{
-		// 						vertical: 'top',
-		// 						horizontal: 'right'
-		// 					}}
-		// 					open={isOpen}
-		// 					onClose={handleClose}
-		// 				>
-		// 					<MenuItem onClick={handleClose}>Profile</MenuItem>
-		// 					<MenuItem onClick={handleClose}>My account</MenuItem>
-		// 					<MenuItem onClick={handleClose}>Orders</MenuItem>
-		// 				</Menu>
-		// 			</div>
-		// 		</Toolbar>
-		// 	</AppBar>
-		// </div>
-
 		<div className={classes.root}>
 			<AppBar position="static">
 				<Toolbar>
@@ -118,10 +76,12 @@ const Navbar1 = (props: any) => {
 						<MenuIcon />
 					</IconButton>
 					<Typography variant="h6" className={classes.title}>
-						News
+						NuTECH
 					</Typography>
-					<Button color="inherit" onClick={props.clearToken}>Logout</Button>
-          {adminButton()}
+					<Button color="inherit" onClick={props.clearToken}>
+						Logout
+					</Button>
+					{adminButton()}
 				</Toolbar>
 			</AppBar>
 		</div>

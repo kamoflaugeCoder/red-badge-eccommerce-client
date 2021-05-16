@@ -52,6 +52,16 @@ const [cartOpen, setCartOpen] = useState(false);
 const handleAddToCart = (item: CartItemType) => null;/*items: CartItemType[]*/
 const handleRemoveFromCart = (id: number) => null;
 
+const [
+  createReview,
+  setCreateReview
+] = useState({});
+
+const postReview = (review: any) => {
+  setCreateReview(review);
+};
+
+
 
 const getTotalItems = (items: CartItemType[]) => 
  items.reduce((ack: number, items) => ack + items.amount, 0);
@@ -95,7 +105,7 @@ useEffect(()=> {
         {cartItems.map((item: { id: any; category: string; description: string; image: string; price: number; title: string; amount: number; }) => (
         <Grid item key={item.id} xs={12} sm={4}>
         
-          <Item item={item} handleAddToCart={handleAddToCart} token={props.token}getProducts={getProducts} />
+          <Item postReview={postReview} createReview={createReview} item={item} handleAddToCart={handleAddToCart} token={props.token}getProducts={getProducts} />
             {/* <Item item={item} token={props.token} />  */}
         </Grid>
         ))}

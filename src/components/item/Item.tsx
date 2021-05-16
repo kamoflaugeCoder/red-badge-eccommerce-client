@@ -11,7 +11,6 @@ import { Wrapper } from './Items.styles';
 import React, { useState } from 'react';
 import { ButtonDropdown, DropdownToggle, DropdownMenu, DropdownItem } from 'reactstrap';
 
-
 import ReactDOM from 'react-dom';
 import 'antd/dist/antd.css';
 // import './index.css';
@@ -19,111 +18,96 @@ import { Menu, Dropdown } from 'antd';
 import { DownOutlined } from '@ant-design/icons';
 import ProductReview from '../products/productReviews';
 
-
 //Types
 export type CartItemType = {
-  id: number;
-  category:string;
-  description: string;
-  image: string;
-  price: number;
-  title: string;
-  amount: number;
-  
-}
+	id: number;
+	category: string;
+	description: string;
+	image: string;
+	price: number;
+	title: string;
+	amount: number;
+};
 type Props = {
-    item: CartItemType;
-    handleAddToCart: (clickedItem: CartItemType) => void;
-    token:string
-    getProducts:() => void;
-    
-}
+	item: CartItemType;
+	handleAddToCart: (clickedItem: CartItemType) => void;
+	token: string;
+	getProducts: () => void;
+  postReview: any;
+  createReview: any;
+};
 
 const contentStyle = {
-  height: '160px',
-  color: '#fff',
-  lineHeight: '160px',
-  textAlign: 'center',
-  background: '#364d79',
+	height: '160px',
+	color: '#fff',
+	lineHeight: '160px',
+	textAlign: 'center',
+	background: '#364d79'
 };
 
-const handleSubmit = () => {
+// EDIT FETCH
+const Item: React.FC<Props> = ({ item, handleAddToCart, token, getProducts, postReview, createReview }) => {
 
-}
-const Item: React.FC<Props> = ({item, handleAddToCart, token, getProducts }) => { 
-
-const handleEdit = (item:any) => {
-
-fetch(`http://localhost:5200/product/edit`, {
+	const handleEdit = (item: any) => {
+		fetch(`http://localhost:5200/product/edit`, {
 			/*${apiURL}*/
 			method: 'UPDATE',
-			
-			headers:new Headers({
-        'Content-Type': 'application/json', 
-        "Authorization": token
-      })
-		})
-			.then((response) => response.json())
-			.then((data) => {
-        // getProducts()
-			
-      })
-};
 
-const handleDelete = (item:any) => {
-		fetch(`http://localhost:5200/product/${item.id}`, {
-			/*${apiURL}*/
-			method: 'DELETE',
-			headers:new Headers({
-        'Content-Type': 'application/json', 
-        "Authorization": token
-      })
+			headers: new Headers({
+				'Content-Type': 'application/json',
+				Authorization: token
+			})
 		})
 			.then((response) => response.json())
 			.then((data) => {
-        getProducts()
+				// getProducts()
 			});
 	};
 
-  const menu = (
-    <Menu>
-      <div className="form-group">
-    <label htmlFor="exampleFormControlTextarea1"></label>
-    <textarea className="form-control" id="exampleFormControlTextarea1"></textarea>
-    <ProductReview />
-    <Button type="button" onClick={() => handleSubmit()}>SUBMIT</Button>
-  </div>
-    </Menu>
-  );
-  
+	const handleDelete = (item: any) => {
+		fetch(`http://localhost:5200/product/${item.id}`, {
+			/*${apiURL}*/
+			method: 'DELETE',
+			headers: new Headers({
+				'Content-Type': 'application/json',
+				Authorization: token
+			})
+		})
+			.then((response) => response.json())
+			.then((data) => {
+				getProducts();
+			});
+	};
 
-return(  
-<Wrapper>
-  <img src={item.image} alt={item.title} />
-  <div>
-    <h3>{item.title}</h3>
-    <p>{item.description}</p>
-    <h3>${item.price}</h3>
-  </div>
+	const menu = <ProductReview token={token} item={item} createReview={createReview} />;
 
- 
-  <Dropdown overlay={menu}>
-    <a className="ant-dropdown-link" onClick={e => e.preventDefault()}>
-      Give review here<DownOutlined />
-    </a>
-  </Dropdown>,
+	/* ProductReview TEXTFIELD and BUTTON */
 
-  <Button type="button" onClick={() => handleAddToCart(item)}>Add to cart</Button>
-  <Button onClick={() => handleDelete(item)}>Delete</Button>
-</Wrapper>
+	return (
+		<Wrapper>
+			<img src={item.image} alt={item.title} />
+			<div>
+				<h3>{item.title}</h3>
+				<p>{item.description}</p>
+				<h3>${item.price}</h3>
+			</div>
+			{/* ProductReview Dropdown Link */}
+			<Dropdown overlay={menu}>
+				<a
+					className="ant-dropdown-link"
+					onClick={() => {
+						postReview(item);
+					}}
+				>
+					Give review here<DownOutlined />
+				</a>
+			</Dropdown>,
+			<Button type="button" onClick={() => handleAddToCart(item)}>
+				Add to cart
+			</Button>
+			<Button onClick={() => handleDelete(item)}>Delete</Button>
+		</Wrapper>
+	);
+};
 
-
-
-)
-}
-
-    export default Item;
-
-
-
-
+export default Item;
