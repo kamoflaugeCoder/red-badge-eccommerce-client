@@ -10,7 +10,7 @@ export const Wrapper = styled.div`
     height: 100%;
 
     button{
-        border-radius: 0 0 20px 20px;
+        border-radius: 5 5 5px 5px;
     }
 
     img{
@@ -19,9 +19,10 @@ export const Wrapper = styled.div`
         border-radius: 20px 20px 0 0;
     }
 
-    div{
-        font-family: Arial, Helvetica, sans-serif;
-        padding:1rem;
-        height:100%;
+    
+
+    input{
+        width: 90%;  
+        height: 100%;
     }
 `;
