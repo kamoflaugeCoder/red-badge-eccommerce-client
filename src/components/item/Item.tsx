@@ -1,22 +1,32 @@
+
+import ReactDOM from 'react-dom';
 import Button from '@material-ui/core/Button';
-import { Category } from '@material-ui/icons';
-import { Link } from 'react-router-dom';
-import { Badge, Form } from 'reactstrap';
+// import { Collapse } from 'reactstrap';
 // Types
 
 // styles
 import { Wrapper } from './Items.styles';
 // import LoginForm from '../LoginComponents/loginForm'
 
-import React, { useState } from 'react';
-import { ButtonDropdown, DropdownToggle, DropdownMenu, DropdownItem } from 'reactstrap';
+import React from 'react';
 
-import ReactDOM from 'react-dom';
-import 'antd/dist/antd.css';
 // import './index.css';
-import { Menu, Dropdown } from 'antd';
-import { DownOutlined } from '@ant-design/icons';
 import ProductReview from '../products/productReviews';
+
+import { Collapse } from 'antd';
+import { Input } from 'antd';
+import { Rate } from 'antd';
+
+const { Panel }   = Collapse;
+
+
+function callback(key: any) {
+	console.log(key);
+  }
+  
+  const text = `
+  `;
+
 
 //Types
 export type CartItemType = {
@@ -35,6 +45,7 @@ type Props = {
 	getProducts: () => void;
   postReview: any;
   createReview: any;
+  
 };
 
 const contentStyle = {
@@ -44,6 +55,7 @@ const contentStyle = {
 	textAlign: 'center',
 	background: '#364d79'
 };
+
 
 // EDIT FETCH
 const Item: React.FC<Props> = ({ item, handleAddToCart, token, getProducts, postReview, createReview }) => {
@@ -92,7 +104,7 @@ const Item: React.FC<Props> = ({ item, handleAddToCart, token, getProducts, post
 				<h3>${item.price}</h3>
 			</div>
 			{/* ProductReview Dropdown Link */}
-			<Dropdown overlay={menu}>
+			{/* <Dropdown overlay={menu}>
 				<a
 					className="ant-dropdown-link"
 					onClick={() => {
@@ -101,11 +113,26 @@ const Item: React.FC<Props> = ({ item, handleAddToCart, token, getProducts, post
 				>
 					Give review here<DownOutlined />
 				</a>
-			</Dropdown>,
+			</Dropdown>, */}
+<div>
+<Collapse ghost>
+    <Panel header="" showArrow={false} key="1" extra={
+	<button onClick={() => {
+		postReview(item);
+	}}>Reviews</button>
+}>
+	<ProductReview token={token} item={item} createReview={createReview} />;
+    </Panel>
+  </Collapse>,
+  </div>
+
+
+  			<div>
 			<Button type="button" onClick={() => handleAddToCart(item)}>
 				Add to cart
 			</Button>
 			<Button onClick={() => handleDelete(item)}>Delete</Button>
+			</div>
 		</Wrapper>
 	);
 };

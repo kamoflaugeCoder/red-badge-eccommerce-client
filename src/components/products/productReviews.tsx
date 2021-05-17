@@ -122,9 +122,16 @@ const ProductReview: React.FC<Props> = ({ token, item, createReview }) => {
 				
 			})
 		})
-			.then((response) => {
-				console.log(response.json());
-				// displayMine();
+			.then((response) => 
+				response.json()
+			)
+			.then((data) => {      
+				console.log(data)
+				setName("");
+				setTitle("");
+				setDate("");
+				setEntry("")
+
 			})
 			.catch((err) => {
 				console.log(err);
@@ -137,7 +144,6 @@ const ProductReview: React.FC<Props> = ({ token, item, createReview }) => {
 		console.log(postId);
 		const fetch_url = `http://localhost:5200/review/update/${postId}`;
 		const accessToken = localStorage.getItem('SessionToken');
-		// console.log('editJournal Function Called')
 		const response = fetch(fetch_url, {
 			method: 'PUT',
 			headers: {
@@ -215,13 +221,3 @@ const ProductReview: React.FC<Props> = ({ token, item, createReview }) => {
 
 export default ProductReview;
 
-// function updateReview(updateReview: any): BodyInit | null | undefined {
-//   throw new Error('Function not implemented.');
-// }
-// function accessToken(accessToken: any): BodyInit | null | undefined {
-//   throw new Error('Function not implemented.');
-// }
-
-// function newEntry(newEntry: any): BodyInit | null | undefined {
-//   throw new Error('Function not implemented.');
-// }
