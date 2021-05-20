@@ -1,50 +1,36 @@
+import React, { Component } from 'react';
 import CartItem from '../cartItem/cartItem';
-import {Wrapper} from './Cart.styles'
-import {CartItemType } from "../item/Item"
-// refresh
-
-// export default class Cart extends Component{
-    // constructor(props){
-    //     super(props);
-    //     this.state={
-    //         user:null,
-    //         cart:{},
-    //         products:[]
-        // };
-    //     this.routerRef = React.creatRef();
-    // }
-// }
+import { Wrapper } from './Cart.styles';
+import { CartItemType } from '../item/Item';
 
 type Props = {
-    cartItems: CartItemType[];
-    addToCart: (clickedItem: CartItemType)=> void;
-    removeFromCart: (id: number) => void;
+	cartItems: CartItemType[];
+	addToCart: (clickedItem: CartItemType) => void;
+	removeFromCart: (id: number) => void;
 };
 
+export default class Cart extends Component<Props, {}> {
+	constructor(props: Props) {
+		super(props);
+	}
 
-const Cart: React.FC<Props> = ({cartItems, addToCart, removeFromCart}) => {
-const calculateTotal = (items: CartItemType[]) =>
-items.reduce((ack: number, item) => ack + item.amount * item.price, 0);
+	calculateTotal = (items: CartItemType[]) => items.reduce((ack: number, item) => ack + item.amount * item.price, 0);
 
-    return (
-        <Wrapper>
-           <h2>Your Shopping Cart</h2> 
-           {cartItems.length === 0 ? <p>No items in cart.</p> : null}
-           {cartItems.map(item => (
-               <CartItem
-               key={item.id}
-               item={item}
-               addToCart={addToCart}
-               removeFromCart={removeFromCart}
-               />
-           ))}
-           <h2>Total: ${calculateTotal(cartItems).toFixed(2)}</h2>
-        </Wrapper>
-
-        
-    );
-
-    
-};
-
-export default Cart;
+	render() {
+		return (
+			<Wrapper>
+				<h2>Your Shopping Cart</h2>
+				{this.props.cartItems.length === 0 ? <p>No items in cart.</p> : null}
+				{this.props.cartItems.map((item) => (
+					<CartItem
+						key={item.id}
+						item={item}
+						addToCart={this.props.addToCart}
+						removeFromCart={this.props.removeFromCart}
+					/>
+				))}
+				<h2>Total: ${this.calculateTotal(this.props.cartItems).toFixed(2)}</h2>
+			</Wrapper>
+		);
+	}
+}

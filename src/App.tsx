@@ -1,19 +1,9 @@
-import { useState, useEffect } from 'react';
-// import {BrowserRouter, Route, Switch} from "react-router-dom";
-import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom';
-import Drawer from '@material-ui/core/Drawer';
-import Item from './components/item/Item';
-// import Navbar from './navbar/Navbar'
-import Button from '@material-ui/core/Button';
-// import Navbar from './navbar/Navbar';
-import Cart from './components/cart/Cart';
-
+import React, { Component } from 'react';
+import './App.css';
+import 'antd/dist/antd.css';
+import { BrowserRouter as Router } from 'react-router-dom';
 import ItemIndex from './components/item/itemindex';
 import Auth from './components/LoginComponents/Auth';
-import ProductInput from './components/products/productInput';
-import Products from './components/products/Products';
-import ProductReviews from './components/products/productReviews';
-import Sitebar from './navbar/Navbar1';
 import Navbar1 from './navbar/Navbar1';
 
 export type CartItemType = {
@@ -25,111 +15,60 @@ export type CartItemType = {
 	title: string;
 	amount: number;
 };
-
-type Props = {
-	item: CartItemType;
-	addToCart: (clickedItem: CartItemType) => void;
-	removeFromCart: (id: number) => void;
+type stateType = {
+	sessionToken: string | any;
+	userRole: string | null;
 };
 
-function App() {
-	// TOKEN NEED TO BE UPDATED=============================
-	const [
-		sessionToken,
-		setSessionToken
-	] = useState('');
-	const [
-		userRole,
-		setUserRole
-	] = useState('');
-
-	// ----------------I THINK I NEED THIS!!!!!!!!!!!!!
-	useEffect(() => {
+export default class App extends Component<{}, stateType> {
+	constructor(props: any) {
+		super(props);
+		this.state = {
+			sessionToken: '',
+			userRole: ''
+		};
+	}
+	componentDidMount() {
 		if (localStorage.getItem('token')) {
-			setSessionToken(localStorage.getItem('token')!);
+			this.setState({ sessionToken: localStorage.getItem('token') });
 		}
-	}, []);
-
-	useEffect(() => {
 		if (localStorage.getItem('userRole')) {
-			setUserRole(localStorage.getItem('userRole')!);
+			this.setState({ userRole: localStorage.getItem('userRole') });
 		}
-	});
+	}
 
-	const updateUserRole = (newUserRole: string) => {
+	updateUserRole = (newUserRole: string) => {
 		localStorage.setItem('userRole', newUserRole);
-		setUserRole(newUserRole);
-		console.log(userRole);
+		this.setState({ userRole: newUserRole });
+		console.log(this.state.userRole);
 	};
 
-	const updateToken = (newToken: string) => {
+	updateToken = (newToken: string) => {
 		localStorage.setItem('token', newToken);
-		setSessionToken(newToken);
-		console.log(sessionToken);
+		this.setState({ sessionToken: newToken });
+		console.log(this.state.sessionToken);
 	};
 
-	const clearToken = () => {
+	clearToken = () => {
 		localStorage.clear();
-		setSessionToken('');
+		this.setState({ sessionToken: '' });
 	};
 
-	const protectedViews = () => {
-		return sessionToken === localStorage.getItem('token') ? (
+	protectedViews = () => {
+		return this.state.sessionToken === localStorage.getItem('token') ? (
 			<div>
 				<Router>
-					<Navbar1
-					
-						// token={sessionToken}
-						clearToken={clearToken}
-					/>
-				{/* <ProductInput/> */}
+					<Navbar1 clearToken={this.clearToken} />
 				</Router>
-				<ProductInput token={sessionToken} />
-				<ItemIndex token={sessionToken} />
-				{/* <Products token={sessionToken} /> */}
-				
+
+				<ItemIndex token={this.state.sessionToken} />
 			</div>
 		) : (
-			<Auth updateToken={updateToken} updateUserRole={updateUserRole} />
+			<Auth updateToken={this.updateToken} updateUserRole={this.updateUserRole} />
 		);
 	};
 
-	return <div> {protectedViews()}</div>;
-	//   return (
-	//     <div className={classes.root}>
-	//       <AppBar position="static">
-	//         <Toolbar>
-	//           <Typography variant="h6" className={classes.title}>
-	//            NuTech
-	//           </Typography>
-	//             <div>
-	//               <IconButton edge="start" className={classes.menuButton} color="inherit" aria-label="menu" onClick={handleMenu}>
-	//             <MenuIcon />
-	//           </IconButton>
-	//               <Menu
-	//                 id="menu-appbar"
-	//                 anchorEl={anchorEl}
-	//                 anchorOrigin={{
-	//                   vertical: 'top',
-	//                   horizontal: 'right',
-	//                 }}
-	//                 keepMounted
-	//                 transformOrigin={{
-	//                   vertical: 'top',
-	//                   horizontal: 'right',
-	//                 }}
-	//                 open={open}
-	//                 onClose={handleClose}
-	//               >
-	//                 <MenuItem onClick={handleClose}>Profile</MenuItem>
-	//                 <MenuItem onClick={handleClose}>My account</MenuItem>
-	//                 <MenuItem onClick={handleClose}>Orders</MenuItem>
-	//               </Menu>
-	//             </div>
-	//         </Toolbar>
-	//       </AppBar>
-	//     </div>
-	//   );
+	render() {
+		return <div> {this.protectedViews()}</div>;
+	}
 }
-
-export default App;
