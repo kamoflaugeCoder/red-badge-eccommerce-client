@@ -1,17 +1,14 @@
 import React, { Component } from 'react';
 import Register from './Register';
 import Login from './Login';
-import { Button } from '@material-ui/core';
+import { Button } from 'antd';
+import { Card } from 'antd';
+import './Auth.css';
 
 type LoginProps = {
 	updateToken: (newToken: string) => void;
 	updateUserRole: any;
 };
-
-// type Register = {
-//    updateToken: (newToken: string) => void;
-//     // updateRole: (newUserIsAdmin: string) => void;
-// }
 
 type UserState = {
 	showLogin: boolean;
@@ -39,27 +36,27 @@ export default class Auth extends Component<LoginProps, UserState> {
 	};
 	render() {
 		return (
-			<div>
-				<div>
+			<div className="auth">
+				<Card style={{ width: 300 }}>
 					{this.state.showLogin ? (
 						<div>
-							<Register updateToken={this.props.updateToken} updateUserRole={this.props.updateUserRole}/>
+							<Register updateToken={this.props.updateToken} updateUserRole={this.props.updateUserRole} />
 						</div>
 					) : (
 						<div>
 							<Login updateToken={this.props.updateToken} updateUserRole={this.props.updateUserRole} />
 						</div>
 					)}
-					<br />
 					<Button
-						variant="contained"
+						type="default"
 						onClick={(e) => {
 							this.loginToggle(e);
 						}}
 					>
 						{this.state.showLogin ? 'Login' : 'Register'}
 					</Button>
-				</div>
+				</Card>
+				<br />
 			</div>
 		);
 	}
