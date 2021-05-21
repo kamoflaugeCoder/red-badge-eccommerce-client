@@ -5,6 +5,7 @@ switch (window.location.hostname) {
     break;
   case "tc-ecommerce-client.herokuapp.com":
     APIURL = "https://tc-ecommerce-server.herokuapp.com";
+    
     break;
 }
 export default APIURL;
