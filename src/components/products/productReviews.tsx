@@ -2,13 +2,16 @@ import React, { Component } from 'react';
 import Rating from '@material-ui/lab/Rating';
 import Typography from '@material-ui/core/Typography';
 import Box from '@material-ui/core/Box';
-import { Button } from 'reactstrap';
+import { Form, Button, Input } from 'antd';
+import APIURL from '../../helpers/environment';
+
 import { Menu } from 'antd';
 
 type Props = {
 	token: any;
 	item: any;
 	createReview: any;
+	reviewOff: () => void;
 };
 
 type state = {
@@ -34,7 +37,7 @@ export default class ProductReview extends Component<Props, state> {
 	/**DISPLAY BY USER */
 	displayMine = () => {
 		const accessToken = localStorage.getItem('SessionToken');
-		fetch('http://localhost:5200/review/mine', {
+		fetch(`${APIURL}/review/mine`, {
 			method: 'GET',
 			headers: new Headers({
 				'Content-Type': 'application/json',
@@ -57,20 +60,16 @@ export default class ProductReview extends Component<Props, state> {
 	/* DISPLAY ALL */
 
 	display() {
-		fetch('http://localhost:5200/review/', {
+		fetch(`${APIURL}/review/`, {
 			method: 'GET',
 			headers: new Headers({
 				'Content-Type': 'application/json'
 			})
 		})
-			.then(function(response) {
-				return response.json();
-			})
-			.catch(function(error) {
-				console.error('Error', error);
-			})
-			.then(function(response) {
-				console.log(response);
+			.then((res) => res.json())
+			.then((data) => {
+				console.log(data);
+				this.setState({ entry: data });
 			});
 
 		console.log('displayAll Function Called');
@@ -78,9 +77,8 @@ export default class ProductReview extends Component<Props, state> {
 
 	//  POST REVIEW
 
-	postReview(e: any) {
-		e.preventDefault();
-		fetch(`http://localhost:5200/review/create/${this.props.createReview.id}`, {
+	postReview = () => {
+		fetch(`${APIURL}/review/create/${this.props.createReview.id}`, {
 			method: 'POST',
 			headers: new Headers({
 				'Content-Type': 'application/json',
@@ -96,6 +94,7 @@ export default class ProductReview extends Component<Props, state> {
 			.then((response) => response.json())
 			.then((data) => {
 				console.log(data);
+				this.props.reviewOff();
 				this.setState({ name: '' });
 				this.setState({ title: '' });
 				this.setState({ date: '' });
@@ -105,12 +104,12 @@ export default class ProductReview extends Component<Props, state> {
 				console.log(err);
 			});
 		console.log('postReview Function Called');
-	}
+	};
 
 	// UPDATE REVIEW
 	editReview(postId: any) {
 		console.log(postId);
-		const fetch_url = `http://localhost:5200/review/update/${postId}`;
+		const fetch_url = `${APIURL}/review/update/${postId}`;
 		const accessToken = localStorage.getItem('SessionToken');
 		const response = fetch(fetch_url, {
 			method: 'PUT',
@@ -138,7 +137,7 @@ export default class ProductReview extends Component<Props, state> {
 		console.log('deleteReview working');
 		console.log(postId);
 
-		const fetch_url = 'http://localhost:5200/review/delete/${postId}';
+		const fetch_url = `${APIURL}/review/delete/${postId}`;
 		const accessToken = localStorage.getItem('SessionToken');
 
 		fetch(fetch_url, {
@@ -155,71 +154,56 @@ export default class ProductReview extends Component<Props, state> {
 	render() {
 		return (
 			<div>
-				<Box component="fieldset" mb={3} borderColor="transparent">
-					<Typography component="legend">Rating</Typography>
-					<Rating
-						name="simple-controlled"
-						value={this.state.value}
-						onChange={(event, newValue) => {
-							this.setState({ value: newValue });
-						}}
-					/>
-					<Menu>
-						<form onSubmit={this.postReview}>
-							<label>Name</label>
-							<input
-								type="text"
-								onChange={(e) => this.setState({ name: e.target.value })}
-								value={this.state.name}
-								name="name"
-							/>
+				<Typography component="legend">Rating</Typography>
+				<Rating
+					name="simple-controlled"
+					value={this.state.value}
+					onChange={(event, newValue) => {
+						this.setState({ value: newValue });
+					}}
+				/>
+				<Form onFinish={this.postReview}>
+					<Form.Item label="Name">
+						<Input
+							type="text"
+							onChange={(e) => this.setState({ name: e.target.value })}
+							value={this.state.name}
+							name="name"
+						/>
+					</Form.Item>
+					<Form.Item label="Title">
+						<Input
+							type="text"
+							onChange={(e) => this.setState({ title: e.target.value })}
+							value={this.state.title}
+							name="title"
+						/>
+					</Form.Item>
 
-							<label>Title</label>
-							<input
-								type="text"
-								onChange={(e) => this.setState({ title: e.target.value })}
-								value={this.state.title}
-								name="title"
-							/>
+					<Form.Item label="Date">
+						<Input
+							type="text"
+							onChange={(e) => this.setState({ date: e.target.value })}
+							value={this.state.date}
+							name="date"
+						/>
+					</Form.Item>
 
-							<label>Date</label>
-							<input
-								type="text"
-								onChange={(e) => this.setState({ date: e.target.value })}
-								value={this.state.date}
-								name="date"
-							/>
-
-							<label>Entry</label>
-							<input
-								type="text"
-								onChange={(e) => this.setState({ entry: e.target.value })}
-								value={this.state.entry}
-								name="entry"
-							/>
-
-							<button type="submit">Submit Review</button>
-
-							<Button onClick={() => this.editReview(this.props.item)}>Edit</Button>
-						</form>
-					</Menu>
-				</Box>
+					<Form.Item label="Entry">
+						<Input
+							type="text"
+							onChange={(e) => this.setState({ entry: e.target.value })}
+							value={this.state.entry}
+							name="entry"
+						/>
+					</Form.Item>
+					<Form.Item>
+						<Button type="primary" htmlType="submit">
+							Submit Review
+						</Button>
+					</Form.Item>
+				</Form>
 			</div>
 		);
 	}
-}
-
-{
-	/* <div>
-					<Button onClick={showModal}>
-						Open Modal
-					</Button>
-
-
-					<Modal title="Basic Modal" visible={isModalVisible} onOk={handleOk} onCancel={handleCancel}>
-						<p>Some contents...</p>
-						<p>Some contents...</p>
-						<p>Some contents...</p>
-					</Modal>
-                    </div> */
 }

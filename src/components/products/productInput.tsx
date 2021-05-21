@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Form, Input, Button, Modal } from 'antd';
+import APIURL from '../../helpers/environment';
 
 type state = {
 	category: string;
@@ -35,18 +36,14 @@ export default class ProductInput extends Component<Props, state> {
 		};
 	}
 
-	handleOk = () => {
-		this.setState({ isModalVisible: false });
-	};
-
 	handleCancel = () => {
-		this.setState({ isModalVisible: false });
+		this.props.createOff();
 	};
 
 	handleSubmit = () => {
 		// e.preventDefault();
 
-		fetch(`http://localhost:5200/product/create`, {
+		fetch(`${APIURL}/product/create`, {
 			/*${apiURL}*/
 			method: 'POST',
 			body: JSON.stringify({
@@ -87,8 +84,14 @@ export default class ProductInput extends Component<Props, state> {
 
 	render() {
 		return (
-			<Modal title="Basic Modal" visible={true} onOk={this.handleOk} onCancel={this.handleCancel}>
-				<Form onFinish={this.handleSubmit}>
+			<Modal
+				title="Basic Modal"
+				visible={true}
+				onOk={this.handleSubmit}
+				okText="Add Product"
+				onCancel={this.handleCancel}
+			>
+				<Form>
 					<Form.Item>
 						<Input
 							type="text"
@@ -144,11 +147,11 @@ export default class ProductInput extends Component<Props, state> {
 						/>
 					</Form.Item>
 
-					<Form.Item>
+					{/* <Form.Item>
 						<Button type="primary" htmlType="submit">
 							Add Product
 						</Button>
-					</Form.Item>
+					</Form.Item> */}
 				</Form>
 			</Modal>
 		);

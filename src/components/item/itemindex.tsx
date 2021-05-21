@@ -9,6 +9,7 @@ import { Wrapper, StyledButton } from '../../App.styles';
 import Item from './Item';
 import ProductInput from '../products/productInput';
 import { Row, Col, Button } from 'antd';
+import APIURL from "../../helpers/environment"
 
 export type CartItemType = {
 	id: number;
@@ -28,8 +29,9 @@ type acceptedProps = {
 type valueTypes = {
 	cartItems: CartItemType[];
 	cartOpen: boolean;
-	createReview: {};
+	createReview: any;
 	createActive: boolean;
+  reviewActive: boolean
 };
 
 export default class ItemIndex extends Component<acceptedProps, valueTypes> {
@@ -39,7 +41,8 @@ export default class ItemIndex extends Component<acceptedProps, valueTypes> {
 			cartItems: [],
 			cartOpen: false,
 			createReview: {},
-			createActive: false
+			createActive: false,
+      reviewActive: false
 		};
 	}
 
@@ -51,6 +54,14 @@ export default class ItemIndex extends Component<acceptedProps, valueTypes> {
 		this.setState({ createActive: false });
 	};
 
+  reviewOn = () => {
+    this.setState({reviewActive: true})
+  }
+
+  reviewOff = () => {
+    this.setState({reviewActive: false})
+  }
+
 	handleAddToCart = (item: CartItemType) => null;
 	handleRemoveFromCart = (id: number) => null;
 
@@ -61,7 +72,7 @@ export default class ItemIndex extends Component<acceptedProps, valueTypes> {
 	getTotalItems = (items: CartItemType[]) => items.reduce((ack: number, items) => ack + items.amount, 0);
 
 	getProducts = () => {
-		fetch('http://localhost:5200/product', {
+		fetch(`${APIURL}/product`, {
 			method: 'GET',
 			headers: {
 				Authorization: this.props.token
@@ -80,8 +91,9 @@ export default class ItemIndex extends Component<acceptedProps, valueTypes> {
 
 	render() {
 		return (
-			<Wrapper>
-				<Drawer anchor="right" open={this.state.cartOpen} onClose={() => this.setState({ cartOpen: false })}>
+			// <Wrapper>
+      <div>
+				{/* <Drawer anchor="right" open={this.state.cartOpen} onClose={() => this.setState({ cartOpen: false })}>
 					<Cart
 						cartItems={this.state.cartItems}
 						addToCart={this.handleAddToCart}
@@ -92,28 +104,25 @@ export default class ItemIndex extends Component<acceptedProps, valueTypes> {
 					<Badge badgeContent={this.getTotalItems(this.state.cartItems)} color="error">
 						<AddShoppingCartIcon />
 					</Badge>
-				</StyledButton>
+				</StyledButton> */}
 				<Row justify="center">
 					<Col span={12}>
 						<Button
 							type="default"
 							onClick={() => {
 								this.createOn();
-								<ProductInput
-									token={this.props.token}
-									getProducts={this.getProducts}
-									createOn={this.createOn}
-									createOff={this.createOff}
-								/>;
+								
 							}}
 						>
 							Add Product
 						</Button>
 					</Col>
 				</Row>
-				<Grid container spacing={3}>
+				{/* <Grid container spacing={3}> */}
+        <Row justify="space-around">
 					{this.state.cartItems.map((item: any) => (
-						<Grid item key={item.id} xs={12} sm={4}>
+						// <Grid item key={item.id} xs={12} sm={4}>
+            <Col span={6} style={{padding: "20px"}} key={item.id}>
 							<Item
 								postReview={this.postReview}
 								createReview={this.state.createReview}
@@ -121,11 +130,26 @@ export default class ItemIndex extends Component<acceptedProps, valueTypes> {
 								handleAddToCart={this.handleAddToCart}
 								token={this.props.token}
 								getProducts={this.getProducts}
+                reviewOn={this.reviewOn}
+                reviewOff={this.reviewOff}
 							/>
-						</Grid>
+              </Col>
+						// </Grid>
 					))}
-				</Grid>
-			</Wrapper>
+          </Row>
+				{/* </Grid> */}
+      {this.state.createActive ? (
+        <ProductInput
+        token={this.props.token}
+        getProducts={this.getProducts}
+        createOn={this.createOn}
+        createOff={this.createOff}
+      />
+      ) : (
+        <></>
+      )}
+			{/* </Wrapper> */}
+      </div>
 		);
 	}
 }

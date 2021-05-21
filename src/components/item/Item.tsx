@@ -1,5 +1,6 @@
 import ReactDOM from 'react-dom';
-import Button from '@material-ui/core/Button';
+// import Button from '@material-ui/core/Button';
+import { Button } from 'antd';
 
 // Types
 // styles
@@ -12,6 +13,7 @@ import ProductReview from '../products/productReviews';
 
 import { Collapse } from 'antd';
 import ItemEdit from './ItemEdit';
+import APIURL from '../../helpers/environment';
 
 const { Panel } = Collapse;
 
@@ -33,6 +35,8 @@ type Props = {
 	getProducts: () => void;
 	postReview: any;
 	createReview: any;
+	reviewOn: () => void;
+	reviewOff: any;
 };
 
 // EDIT FETCH
@@ -52,7 +56,7 @@ export default class Item extends Component<Props, CartItemType> {
 	}
 
 	handleDelete(item: {}) {
-		fetch(`http://localhost:5200/product/${this.props.item.id}`, {
+		fetch(`${APIURL}/product/${this.props.item.id}`, {
 			method: 'DELETE',
 			headers: new Headers({
 				'Content-Type': 'application/json',
@@ -65,12 +69,16 @@ export default class Item extends Component<Props, CartItemType> {
 			});
 	}
 
-	reviewMenu() {
-		<button>View Reviews ${this.props.item.reviews.length}</button>;
-	}
-	editProductMenu() {
-		<Button>Edit</Button>;
-	}
+	// reviewMenu = () => {
+	// 	return <button>View Reviews ${this.props.item.reviews.length}</button>;
+	// };
+
+	reviewMenu = this.props.item.reviews.length === 0 ? (
+		''
+	) : (
+		<Button type="text">View Reviews {this.props.item.reviews.length}</Button>
+	);
+	editProductMenu = <Button type="text">Edit</Button>;
 
 	render() {
 		return (
@@ -81,52 +89,60 @@ export default class Item extends Component<Props, CartItemType> {
 					<p>{this.props.item.description}</p>
 					<h3>${this.props.item.price}</h3>
 				</div>
-				<div>
-					<Collapse ghost>
-						<Panel
-							header=""
-							showArrow={false}
-							key="1"
-							extra={
-								<button
-									onClick={() => {
-										this.props.postReview(this.props.item);
-									}}
-								>
-									Reviews
-								</button>
-							}
-						>
-							<ProductReview
-								token={this.props.token}
-								item={this.props.item}
-								createReview={this.props.createReview}
-							/>;
-						</Panel>
-					</Collapse>
-				</div>
-				<div>
-					<Collapse ghost>
-						<Panel header={this.reviewMenu} showArrow={false} key="1">
-							<ReviewView token={this.props.token} item={this.props.item} />
-						</Panel>
-					</Collapse>
-				</div>
+				<Collapse ghost>
+					<Panel
+						header=""
+						showArrow={false}
+						key="1"
+						extra={
+							<button
+								onClick={() => {
+									this.props.reviewOn();
+									this.props.postReview(this.props.item);
+									console.log(this.props.item.id);
+								}}
+							>
+								Add Reviews
+							</button>
+						}
+					>
+						<ProductReview
+							token={this.props.token}
+							item={this.props.item}
+							createReview={this.props.createReview}
+							reviewOff={this.props.reviewOff}
+						/>;
+					</Panel>
+				</Collapse>
+				<Collapse ghost>
+					<Panel header={this.reviewMenu} showArrow={false} key="1">
+						<ReviewView
+							token={this.props.token}
+							item={this.props.item}
+							getProducts={this.props.getProducts}
+						/>
+					</Panel>
+				</Collapse>
 
 				<div>
-					{/* <Button onClick={() => <ItemEdit />}>Edit</Button> */}
 					<div>
 						<Collapse ghost>
 							<Panel header={this.editProductMenu} showArrow={false} key="1">
-								<ItemEdit token={this.props.token} item={this.props.item} />
+								<ItemEdit
+									token={this.props.token}
+									item={this.props.item}
+									getProducts={this.props.getProducts}
+								/>
 							</Panel>
 						</Collapse>
 					</div>
 
-					<Button type="button" onClick={() => this.props.handleAddToCart(this.props.item)}>
+					<Button type="text" onClick={() => this.props.handleAddToCart(this.props.item)}>
 						Add to cart
 					</Button>
-					<Button onClick={() => this.handleDelete(this.props.item)}>Delete</Button>
+					<Button type="text" onClick={() => this.handleDelete(this.props.item)}>
+						Delete
+					</Button>
 				</div>
 			</Wrapper>
 		);

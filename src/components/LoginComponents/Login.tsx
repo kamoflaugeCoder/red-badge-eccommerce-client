@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Form, Input, Button } from 'antd';
+import APIURL from '../../helpers/environment';
 
 //state type
 
@@ -98,7 +99,7 @@ export default class Login extends Component<LoginProps, State> {
 	// LOGIN FETCH RIGHT HERE==============================
 	handleSubmit = () => {
 		// e.preventDefault();
-		fetch(`http://localhost:5200/user/login`, {
+		fetch(`${APIURL}/user/login`, {
 			method: 'POST',
 			body: JSON.stringify({ user: { email: this.state.email, password: this.state.password } }),
 			headers: {

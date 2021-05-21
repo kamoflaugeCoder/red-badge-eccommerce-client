@@ -15,6 +15,7 @@ export type CartItemType = {
 	title: string;
 	amount: number;
 };
+// test
 type stateType = {
 	sessionToken: string | any;
 	userRole: string | null;
