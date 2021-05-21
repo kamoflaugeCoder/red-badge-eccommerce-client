@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Form, Input, Button } from 'antd';
+import APIURL from '../../helpers/environment';
 
 // const useStyles = withStyles((theme: Theme) =>
 // 	createStyles({
@@ -54,7 +55,7 @@ export default class Register extends Component<RegisterProps, State> {
 	// REGISTER FETCH RIGHT HERE==============================
 	handleSubmit = () => {
 		// e.preventDefault();
-		fetch(`http://localhost:5200/user/create`, {
+		fetch(`${APIURL}/user/create`, {
 			method: 'POST',
 			body: JSON.stringify({ user: { email: this.state.email, password: this.state.password } }),
 			headers: {
